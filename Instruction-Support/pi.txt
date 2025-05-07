@@ -1,0 +1,125 @@
+
+Found OpenCL device: V3D 7.1.7
+  Vendor             : Unknown vendor
+  Vendor ID          : 5348
+  Profile            : FULL_PROFILE
+  Device Version     : OpenCL 3.0 CLVK on Vulkan v1.2.255 driver 96477185
+  Driver Version     : 3.0 CLVK on Vulkan v1.2.255 driver 96477185
+  Device Type        : GPU 
+  Available          : Yes
+  Compiler Available : Yes
+  Compute Units      : 1
+  Max Clock (MHz)    : 0
+  Global Mem Size    : 4096 MB
+  Local Mem Size     : 16 KB
+  Max Mem Alloc Size : 1024 MB
+  Global Cache Size  : 0 KB
+  Global Cache Type  : None
+  Work Item Dims     : 3
+  Max Work Item Size : 256 × 256 × 256
+  Max Work Group Size: 256
+  Address Bits       : 32
+  Timer Resolution   : 1 ns
+  Preferred Vec Width (char)  : 1
+  Preferred Vec Width (int)   : 1
+  Preferred Vec Width (float) : 1
+  Preferred Vec Width (double): 0
+  Image Support      : Yes
+  Max Read Image Args: 16
+  Max Write Image Args: 4
+  Image2D Max Width  : 4096
+  Image2D Max Height : 4096
+  Extensions         : cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_extended_versioning cl_khr_create_command_queue cl_khr_il_program cl_khr_spirv_no_integer_wrap_decoration cl_arm_non_uniform_work_group_size cl_arm_printf cl_khr_suggested_local_work_size cl_khr_3d_image_writes cl_khr_spirv_linkonce_odr cl_khr_device_uuid 
+  Queue Properties   : PROFILING 
+
+Found OpenCL device: llvmpipe (LLVM 15.0.6, 128 bits)
+  Vendor             : Mesa
+  Vendor ID          : 65541
+  Profile            : FULL_PROFILE
+  Device Version     : OpenCL 3.0 CLVK on Vulkan v1.3.255 driver 1
+  Driver Version     : 3.0 CLVK on Vulkan v1.3.255 driver 1
+  Device Type        : CPU 
+  Available          : Yes
+  Compiler Available : Yes
+  Compute Units      : 1
+  Max Clock (MHz)    : 0
+  Global Mem Size    : 8064 MB
+  Local Mem Size     : 32 KB
+  Max Mem Alloc Size : 2048 MB
+  Global Cache Size  : 0 KB
+  Global Cache Type  : None
+  Work Item Dims     : 3
+  Max Work Item Size : 1024 × 1024 × 1024
+  Max Work Group Size: 1024
+  Address Bits       : 32
+  Timer Resolution   : 1 ns
+  Preferred Vec Width (char)  : 1
+  Preferred Vec Width (int)   : 1
+  Preferred Vec Width (float) : 1
+  Preferred Vec Width (double): 0
+  Image Support      : Yes
+  Max Read Image Args: 1000000
+  Max Write Image Args: 1000000
+  Image2D Max Width  : 16384
+  Image2D Max Height : 16384
+  Extensions         : cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_extended_versioning cl_khr_create_command_queue cl_khr_il_program cl_khr_spirv_no_integer_wrap_decoration cl_arm_non_uniform_work_group_size cl_arm_printf cl_khr_suggested_local_work_size cl_khr_3d_image_writes cl_khr_spirv_linkonce_odr cl_khr_device_uuid cl_khr_fp16 cl_intel_required_subgroup_size cl_khr_integer_dot_product cl_arm_integer_dot_product_int8 cl_arm_integer_dot_product_accumulate_int8 cl_arm_integer_dot_product_accumulate_saturate_int8 cl_arm_integer_dot_product_accumulate_int16 
+  Queue Properties   : PROFILING 
+This program contains 17 kernels
+----------------------------------------------Testing operation support on all CL devices----------------------------------------------
+Checking support for basic aritmetic ops (+ - * / %) for device V3D 7.1.7
+Arithmetic Kernel on V3D 7.1.7 took 0.168905
+
+Checking support for basic aritmetic ops (+ - * / %) for device llvmpipe (LLVM 15.0.6, 128 bits)
+Arithmetic Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.346518
+
+Checking support for exponenetial operations for device V3D 7.1.7
+Exponential Kernel on V3D 7.1.7 took 0.068958
+
+Checking support for exponenetial operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Exponential Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.082564
+
+Checking support for logarithmic operations for device V3D 7.1.7
+Logarithmic Kernel on V3D 7.1.7 took 0.079651
+
+Checking support for logarithmic operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Logarithmic Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.210433
+
+Checking support for power operations for device V3D 7.1.7
+Exponential Kernel on V3D 7.1.7 took 0.166892
+expected 16921652.000000
+for index = 2: 8.214480 ^ 7.903564 != 16921650.000000
+
+Checking support for power operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Exponential Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.304955
+expected 227183.390625
+for index = 13: 5.400481 ^ 7.313134 != 227183.406250
+
+Checking support for square root operations for device V3D 7.1.7
+Square root Kernel on V3D 7.1.7 took 0.040961
+
+Checking support for square root operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Square root Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.063779
+
+Checking support for rounding operations for device V3D 7.1.7
+Round Kernel on V3D 7.1.7 took 0.047120
+
+Checking support for rounding operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Round Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.066647
+
+Checking support for abs, min, and max operations for device V3D 7.1.7
+Abs, min, max Kernel on V3D 7.1.7 took 0.043013
+
+Checking support for abs, min, and max operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Abs, min, max Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.092099
+
+Checking support for interpolation operations for device V3D 7.1.7
+Abs, min, max Kernel on V3D 7.1.7 took 0.061881
+
+Checking support for interpolation operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Abs, min, max Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.099137
+
+Checking support for fast math operations for device V3D 7.1.7
+Round Kernel on V3D 7.1.7 took 0.045059
+
+Checking support for fast math operations for device llvmpipe (LLVM 15.0.6, 128 bits)
+Round Kernel on llvmpipe (LLVM 15.0.6, 128 bits) took 0.076832

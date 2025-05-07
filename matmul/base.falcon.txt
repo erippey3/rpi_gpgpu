@@ -1,0 +1,20 @@
+
+Using OpenCL device: NVIDIA GeForce GTX 1050
+
+===== Sequential, matrix mult (dot prod), order 1024 on host CPU ======
+ 4.56 seconds at 470.6 MFLOPS 
+
+===== OpenCL, matrix mult, C(i,j) per work item, order 1024 ======
+ 0.19 seconds at 11601.4 MFLOPS 
+
+===== OpenCL, matrix mult, C row per work item, order 1024 ======
+ 0.20 seconds at 10565.6 MFLOPS 
+
+===== OpenCL, matrix mult, C row, A row in priv mem, order 1024 ======
+ 0.08 seconds at 26223.7 MFLOPS 
+
+===== OpenCL, mat mult, C row, priv A, B cols loc, order 1024 ======
+ 0.08 seconds at 26356.0 MFLOPS 
+
+===== Parallel matrix mult (blocked), order 1024 on device ======
+ 0.01 seconds at 230095.8 MFLOPS 

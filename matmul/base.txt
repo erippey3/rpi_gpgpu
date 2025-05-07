@@ -1,0 +1,20 @@
+
+Using OpenCL device: V3D 7.1.7
+
+===== Sequential, matrix mult (dot prod), order 1024 on host CPU ======
+ 9.28 seconds at 231.4 MFLOPS 
+
+===== OpenCL, matrix mult, C(i,j) per work item, order 1024 ======
+ 4.78 seconds at 449.4 MFLOPS 
+
+===== OpenCL, matrix mult, C row per work item, order 1024 ======
+ 4.90 seconds at 438.3 MFLOPS 
+
+===== OpenCL, matrix mult, C row, A row in priv mem, order 1024 ======
+ 4.60 seconds at 466.4 MFLOPS 
+
+===== OpenCL, mat mult, C row, priv A, B cols loc, order 1024 ======
+ 3.47 seconds at 618.7 MFLOPS 
+
+===== Parallel matrix mult (blocked), order 1024 on device ======
+ 0.56 seconds at 3818.7 MFLOPS 
