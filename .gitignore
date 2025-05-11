@@ -1,0 +1,22 @@
+# ==============================
+# Ignore compiled object files
+# ==============================
+*.o
+*.obj
+*.lo
+
+# ==============================
+# Ignore executables and binary outputs
+# ==============================
+*.exe
+*.out
+a.out
+# (if you have named binaries, you can also list them explicitly, e.g.)
+spmv
+
+
+# ==============================
+# Ignore dwarfs/SpMV/matrices directory
+# ==============================
+/dwarfs/SpMV/matrices/
+
