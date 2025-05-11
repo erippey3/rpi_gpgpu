@@ -23,14 +23,6 @@ MMUL_OBJS = wtime.o
 EXEC = mult
 
 
-# Check our platform and make sure we define the APPLE variable
-# and set up the right compiler flags and libraries
-PLATFORM = $(shell uname -s)
-ifeq ($(PLATFORM), Darwin)
-	LIBS = -lm -framework OpenCL 
-endif
-
-
 all: $(EXEC)
 
 mult: $(MMUL_OBJS) matmul.c matrix_lib.c 

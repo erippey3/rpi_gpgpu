@@ -1,5 +1,5 @@
-#include "cl_utils.h"
-
+#include <cl_utils.h>
+#include <err_code.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -83,4 +83,53 @@ cleanup:
     free(lengths);
 
     return program;
+}
+
+
+
+
+
+
+void* char_new_array(const size_t N,const char* error_msg)
+{
+	void* ptr;
+	int err;
+	ptr = malloc(N * sizeof(char));
+	check(ptr != NULL,error_msg);
+	return ptr;
+}
+
+void* int_new_array(const size_t N,const char* error_msg)
+{
+	void* ptr;
+	int err;
+	ptr = malloc(N * sizeof(int));
+	check(ptr != NULL,error_msg);
+	return ptr;
+}
+
+void* long_new_array(const size_t N,const char* error_msg)
+{
+	void* ptr;
+	int err;
+	ptr = malloc(N * sizeof(long));
+	check(ptr != NULL,error_msg);
+	return ptr;
+}
+
+void* float_new_array(const size_t N,const char* error_msg)
+{
+	void* ptr;
+	int err;
+	ptr = malloc(N * sizeof(float));
+	check(ptr != NULL,error_msg);
+	return ptr;
+}
+
+void* float_array_realloc(void* ptr,const size_t N,const char* error_msg)
+{
+	int err;
+	ptr = realloc(ptr,N * sizeof(float));
+	check(ptr != NULL,error_msg);
+	return ptr;
 }

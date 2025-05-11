@@ -1,0 +1,63 @@
+
+Found OpenCL device: NVIDIA GeForce GTX 1050
+  Vendor             : NVIDIA Corporation
+  Vendor ID          : 4318
+  Profile            : FULL_PROFILE
+  Device Version     : OpenCL 3.0 CUDA
+  Driver Version     : 570.124.06
+  Device Type        : GPU 
+  Available          : Yes
+  Compiler Available : Yes
+  Compute Units      : 5
+  Max Clock (MHz)    : 1493
+  Global Mem Size    : 1992 MB
+  Local Mem Size     : 48 KB
+  Max Mem Alloc Size : 498 MB
+  Global Cache Size  : 240 KB
+  Global Cache Type  : Read-Write
+  Work Item Dims     : 3
+  Max Work Item Size : 1024 × 1024 × 64
+  Max Work Group Size: 1024
+  Address Bits       : 64
+  Timer Resolution   : 1000 ns
+  Preferred Vec Width (char)  : 1
+  Preferred Vec Width (int)   : 1
+  Preferred Vec Width (float) : 1
+  Preferred Vec Width (double): 1
+  Image Support      : Yes
+  Max Read Image Args: 256
+  Max Write Image Args: 16
+  Image2D Max Width  : 16
+  Image2D Max Height : 16
+  Extensions         : cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_fp64 cl_khr_3d_image_writes cl_khr_byte_addressable_store cl_khr_icd cl_khr_gl_sharing cl_nv_compiler_options cl_nv_device_attribute_query cl_nv_pragma_unroll cl_nv_copy_opts cl_nv_create_buffer cl_khr_int64_base_atomics cl_khr_int64_extended_atomics cl_khr_device_uuid cl_khr_pci_bus_info cl_khr_external_semaphore cl_khr_external_memory cl_khr_external_semaphore_opaque_fd cl_khr_external_memory_opaque_fd cl_khr_semaphore
+  Queue Properties   : OUT-OF-ORDER PROFILING 
+This program contains 1 kernels
+----------------------------------------------Testing operation support on all CL devices----------------------------------------------
+Checking support for basic aritmetic ops (+ - * / %) for device NVIDIA GeForce GTX 1050
+Arithmetic Kernel on NVIDIA GeForce GTX 1050 took 0.042807
+
+Checking support for exponenetial operations for device NVIDIA GeForce GTX 1050
+Exponential Kernel on NVIDIA GeForce GTX 1050 took 0.004719
+
+Checking support for logarithmic operations for device NVIDIA GeForce GTX 1050
+Logarithmic Kernel on NVIDIA GeForce GTX 1050 took 0.004824
+
+Checking support for power operations for device NVIDIA GeForce GTX 1050
+Exponential Kernel on NVIDIA GeForce GTX 1050 took 0.009248
+expected 3272579840.000000
+for index = 0: 9.536713 ^ 9.715033 != 3272580096.000000
+
+Checking support for square root operations for device NVIDIA GeForce GTX 1050
+Square root Kernel on NVIDIA GeForce GTX 1050 took 0.004507
+
+Checking support for rounding operations for device NVIDIA GeForce GTX 1050
+Round Kernel on NVIDIA GeForce GTX 1050 took 0.004686
+
+Checking support for abs, min, and max operations for device NVIDIA GeForce GTX 1050
+Abs, min, max Kernel on NVIDIA GeForce GTX 1050 took 0.008641
+
+Checking support for interpolation operations for device NVIDIA GeForce GTX 1050
+Abs, min, max Kernel on NVIDIA GeForce GTX 1050 took 0.008903
+
+Checking support for fast math operations for device NVIDIA GeForce GTX 1050
+Round Kernel on NVIDIA GeForce GTX 1050 took 0.004652
