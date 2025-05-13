@@ -11,20 +11,9 @@
 // HISTORY:  Written by Tim Mattson, June 2010
 //
 //------------------------------------------------------------------------------
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#ifdef __APPLE__
-#include <OpenCL/opencl.h>
-#else
-#include <CL/cl.h>
-#endif
-//
-//  define VERBOSE if you want to print info about work groups sizes
-//#define  VERBOSE 1
-#ifdef VERBOSE
-     extern int err_code(cl_int);
-#endif
+#include "device_info.h"
+
+#define MAX_INFO_LEN 512
 
 int output_device_info(cl_device_id device_id)
 {
@@ -124,3 +113,57 @@ int output_device_info(cl_device_id device_id)
 }
 
  
+#ifdef __linux__
+
+char* get_cpu_name() {
+    static char cpu_name[MAX_INFO_LEN] = "Unknown";
+
+    FILE *fp = fopen("/proc/cpuinfo", "r");
+    if (fp) {
+        char line[512];
+        while (fgets(line, sizeof(line), fp)) {
+            if (strncmp(line, "model name", 10) == 0) {
+                char *colon = strchr(line, ':');
+                if (colon) {
+                    strncpy(cpu_name, colon + 2, MAX_INFO_LEN - 1);
+                    cpu_name[strcspn(cpu_name, "\n")] = '\0'; // Remove newline
+                }
+                break;
+            }
+        }
+        fclose(fp);
+    } else {
+        // Fallback to lscpu if /proc/cpuinfo is unavailable
+        fp = popen("lscpu | grep 'Model name' | cut -d: -f2", "r");
+        if (fp && fgets(cpu_name, MAX_INFO_LEN, fp)) {
+            cpu_name[strcspn(cpu_name, "\n")] = '\0';
+        }
+        if (fp) pclose(fp);
+    }
+
+    return cpu_name;
+}
+
+char* get_gpu_name() {
+    static char gpu_name[MAX_INFO_LEN] = "Unknown";
+
+    FILE *fp = popen("lspci | grep -i 'vga\\|3d\\|display' | cut -d: -f3", "r");
+    if (fp && fgets(gpu_name, MAX_INFO_LEN, fp)) {
+        gpu_name[strcspn(gpu_name, "\n")] = '\0';
+    }
+    if (fp) pclose(fp);
+
+    return gpu_name;
+}
+
+#else // Non-Linux fallback
+
+char* get_cpu_name() {
+    return "Unknown (Non-Linux)";
+}
+
+char* get_gpu_name() {
+    return "Unknown (Non-Linux)";
+}
+
+#endif
