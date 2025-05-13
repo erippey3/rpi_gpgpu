@@ -1,0 +1,74 @@
+for the gpu, this was run for csr using no optimizations, and no group size
+
+
+running test thread parallel coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 5.537929 speedup over running test serial coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 4.696960 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 0.326818 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 0.069581 speedup over running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+
+
+running test thread parallel coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 3.182127 speedup over running test serial coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 2.963412 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 0.362013 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 0.122161 speedup over running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+
+
+running test thread parallel coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 5.743281 speedup over running test serial coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 4.305629 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 0.360064 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 0.083626 speedup over running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+
+
+running test thread parallel coordinate SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 3.230023 speedup over running test serial coordinate SpMV: matrices/heart2/heart2.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 4.850157 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 0.411700 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 0.084884 speedup over running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+
+
+running test thread parallel coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 4.969341 speedup over running test serial coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 4.221690 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 0.195553 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 0.046321 speedup over running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+
+
+running test thread parallel coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 4.148581 speedup over running test serial coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+
+
+running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 2.760379 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 0.255410 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+
+
+running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 0.092527 speedup over running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+

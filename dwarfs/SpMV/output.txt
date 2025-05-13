@@ -1,0 +1,269 @@
+Serial: Enabled
+OpenMP: Enabled
+OpenCL: Enabled
+
+Using OpenCL device: V3D 7.1.7
+matrices/barrier2-2/barrier2-2.mtx: Loaded 113076 x 113076 matrix with 3805068 nonzeros (297 ppm)
+Generating random vector of length 113076 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.043946 s
+  Min time  : 0.043791 s
+  Max time  : 0.044374 s
+  Std Dev   : 0.000159 s
+
+Benchmark thread parallel coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.007935 s
+  Min time  : 0.007871 s
+  Max time  : 0.007977 s
+  Std Dev   : 0.000030 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:21 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:21 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:21 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.030224 s
+  Min time  : 0.029916 s
+  Max time  : 0.030496 s
+  Std Dev   : 0.000162 s
+
+Benchmark thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.006435 s
+  Min time  : 0.006392 s
+  Max time  : 0.006578 s
+  Std Dev   : 0.000043 s
+
+Benchmark GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.092481 s
+  Min time  : 0.092173 s
+  Max time  : 0.095907 s
+  Std Dev   : 0.000948 s
+
+matrices/belgium_osm/belgium_osm.mtx: Loaded 1441295 x 1441295 matrix with 1549970 nonzeros (0 ppm)
+Generating random vector of length 1441295 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.024928 s
+  Min time  : 0.024752 s
+  Max time  : 0.025558 s
+  Std Dev   : 0.000192 s
+
+Benchmark thread parallel coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.007834 s
+  Min time  : 0.007734 s
+  Max time  : 0.008013 s
+  Std Dev   : 0.000075 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:24 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:24 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:25 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.027058 s
+  Min time  : 0.026844 s
+  Max time  : 0.027855 s
+  Std Dev   : 0.000298 s
+
+Benchmark thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.009131 s
+  Min time  : 0.009004 s
+  Max time  : 0.009281 s
+  Std Dev   : 0.000107 s
+
+Benchmark GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.074743 s
+  Min time  : 0.074434 s
+  Max time  : 0.078239 s
+  Std Dev   : 0.000967 s
+
+matrices/ct20stif/ct20stif.mtx: Loaded 52329 x 52329 matrix with 1375396 nonzeros (502 ppm)
+Generating random vector of length 52329 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/ct20stif/ct20stif.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.015343 s
+  Min time  : 0.015264 s
+  Max time  : 0.015393 s
+  Std Dev   : 0.000040 s
+
+Benchmark thread parallel coordinate SpMV: matrices/ct20stif/ct20stif.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.002671 s
+  Min time  : 0.002656 s
+  Max time  : 0.002685 s
+  Std Dev   : 0.000010 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:28 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:28 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:28 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/ct20stif/ct20stif.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.010231 s
+  Min time  : 0.010201 s
+  Max time  : 0.010253 s
+  Std Dev   : 0.000017 s
+
+Benchmark thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.002376 s
+  Min time  : 0.002349 s
+  Max time  : 0.002528 s
+  Std Dev   : 0.000043 s
+
+Benchmark GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.028416 s
+  Min time  : 0.028172 s
+  Max time  : 0.031707 s
+  Std Dev   : 0.000911 s
+
+matrices/heart2/heart2.mtx: Loaded 2339 x 2339 matrix with 682797 nonzeros (124804 ppm)
+Generating random vector of length 2339 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/heart2/heart2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.007658 s
+  Min time  : 0.007556 s
+  Max time  : 0.008354 s
+  Std Dev   : 0.000199 s
+
+Benchmark thread parallel coordinate SpMV: matrices/heart2/heart2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.002371 s
+  Min time  : 0.001218 s
+  Max time  : 0.003390 s
+  Std Dev   : 0.000963 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:29 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:29 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:29 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/heart2/heart2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.005002 s
+  Min time  : 0.004853 s
+  Max time  : 0.006298 s
+  Std Dev   : 0.000361 s
+
+Benchmark thread parallel CSR SpMV: matrices/heart2/heart2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.001031 s
+  Min time  : 0.001020 s
+  Max time  : 0.001060 s
+  Std Dev   : 0.000012 s
+
+Benchmark GPU CSR SpMV: matrices/heart2/heart2.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.012150 s
+  Min time  : 0.011894 s
+  Max time  : 0.015477 s
+  Std Dev   : 0.000920 s
+
+matrices/mac_econ_fwd500/mac_econ_fwd500.mtx: Loaded 206500 x 206500 matrix with 1273389 nonzeros (29 ppm)
+Generating random vector of length 206500 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.014480 s
+  Min time  : 0.014435 s
+  Max time  : 0.014510 s
+  Std Dev   : 0.000020 s
+
+Benchmark thread parallel coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.002914 s
+  Min time  : 0.002865 s
+  Max time  : 0.002958 s
+  Std Dev   : 0.000027 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:31 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:31 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:31 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.010218 s
+  Min time  : 0.010184 s
+  Max time  : 0.010269 s
+  Std Dev   : 0.000025 s
+
+Benchmark thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.002420 s
+  Min time  : 0.002351 s
+  Max time  : 0.002707 s
+  Std Dev   : 0.000084 s
+
+Benchmark GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.052250 s
+  Min time  : 0.051967 s
+  Max time  : 0.055501 s
+  Std Dev   : 0.000900 s
+
+matrices/webbase-1M/webbase-1M.mtx: Loaded 1000005 x 1000005 matrix with 3105536 nonzeros (3 ppm)
+Generating random vector of length 1000005 with seed 3735928559
+Benchmark serial coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.037904 s
+  Min time  : 0.037621 s
+  Max time  : 0.039334 s
+  Std Dev   : 0.000404 s
+
+Benchmark thread parallel coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.009137 s
+  Min time  : 0.009059 s
+  Max time  : 0.009276 s
+  Std Dev   : 0.000058 s
+
+Converting matrix from coordinate list to compressed sparse row
+Current time: Tue May 13 22:00:34 2025
+Memory Allocated. Copying column indices & values...
+Current time: Tue May 13 22:00:34 2025
+Calculating Row Pointers...
+Current time: Tue May 13 22:00:34 2025
+Conversion Complete. Returning...
+Benchmark serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.031763 s
+  Min time  : 0.031527 s
+  Max time  : 0.032011 s
+  Std Dev   : 0.000145 s
+
+Benchmark thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.011507 s
+  Min time  : 0.011455 s
+  Max time  : 0.011587 s
+  Std Dev   : 0.000033 s
+
+Benchmark GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx running on device Unknown
+  Runs      : 15
+  Avg time  : 0.124362 s
+  Min time  : 0.124082 s
+  Max time  : 0.127711 s
+  Std Dev   : 0.000927 s
+

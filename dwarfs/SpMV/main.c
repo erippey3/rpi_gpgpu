@@ -69,6 +69,12 @@ int main(int argc, char *argv[]) {
     if (opencl)
         init_cl(0, stdout);
 
+    FILE *speedup_file = fopen("speedups.txt", "w");
+    if (speedup_file == NULL) {
+        fprintf(stderr, "Could not open speedup file\n");
+        speedup_file = stdout;
+    }
+
     
 
     for (int i = 0; i < sizeof(graphs) / sizeof(char *); i++){
@@ -185,12 +191,12 @@ int main(int argc, char *argv[]) {
         // test csr spmv on opencl kernels
         if (opencl) {
             snprintf(test_name, MAX_TEST_NAME_LEN, "GPU CSR SpMV: %s", graphs[i]);
-            b[4] = init_benchmark(get_gpu_name(), test_name);
+            b[5] = init_benchmark(get_gpu_name(), test_name);
 
             // run the test multiple times
             for (int t = 0; t < TEST_REPETITIONS; t++){
 
-                v2 = opencl_csr_spmv(csr, v, &b[4]);
+                v2 = opencl_csr_spmv(csr, v, &b[5]);
 
                 // compare equality by transitive property
                 if (v1) {
@@ -199,19 +205,28 @@ int main(int argc, char *argv[]) {
                 v1 = v2;
             }
 
-            print_stats(&b[4], stdout);
+            print_stats(&b[5], stdout);
         }
 
         
         if (serial && openmp){
-            print_speedup(b[0], b[1], stdout);
-            print_speedup(b[3], b[4], stdout);
+            print_speedup(b[0], b[1], speedup_file);
+            print_speedup(b[3], b[4], speedup_file); //csr speedup
+        }
+
+        if (serial && opencl) {
+            print_speedup(b[3], b[5], speedup_file); // csr speedup
+        }
+
+        if (openmp && opencl) {
+            print_speedup(b[4], b[5], speedup_file); //csr speedup
         }
 
 
 
     }
 
-
+    fclose(speedup_file);
+    
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <cl_utils.h>
 #include <device_picker.h>
 #include <wtime.h>
+#include <math.h>
 
 
 cl_int err;
@@ -50,11 +51,12 @@ void init_cl(int device_id, FILE *stream){
 
 }
 
-
+#define TILE_SIZE 32
 vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 
     cl_mem d_Ap, d_Aj, d_Ax, d_x, d_y;
     double start_time;
+
 
 
     // creating memory buffers on device of choice
@@ -79,8 +81,10 @@ vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
     checkError(err, "Creating buffer d_y");
 
     // creating kernel from program file
-    cl_kernel kernel = clCreateKernel(program, "csr", &err);
+    cl_kernel kernel = clCreateKernel(program, "csr_tiled", &err);
     checkError(err, "Creating kernel csr");
+
+    
 
     // setting arguments of kernel
     err = clSetKernelArg(kernel, 0, sizeof(int), &m->num_rows);
@@ -96,9 +100,9 @@ vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
         start_time = wtime();
 
 
-    const size_t global[1] = {m->num_rows};
-    const size_t local[1] = {16}; // wait off on this
-    err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, global, NULL, 0, NULL, NULL);
+    const size_t global[1] = {ceil((double)m->num_rows/TILE_SIZE)};
+    const size_t local[1] = {256}; // wait off on this
+    err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, global, local, 0, NULL, NULL);
     checkError(err, "Enqueueing kernel");
 
     err = clFinish(commands);
