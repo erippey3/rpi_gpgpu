@@ -70,13 +70,13 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < sizeof(graphs) / sizeof(char *); i++){
         // load coordinate matrix from file as that is how .mtx are stored
-        coo_matrix *matrix = (coo_matrix *) malloc(sizeof(coo_matrix));
-        *matrix = load_matrix_market_to_coo(graphs[i], stdout);
+        coo_matrix *coo = (coo_matrix *) malloc(sizeof(coo_matrix));
+        *coo = load_matrix_market_to_coo(graphs[i], stdout);
 
         // get a vector proportionate to the size of the matrix
         vector * v = (vector *) malloc(sizeof(vector));
         unsigned long seed = 0xdeadbeef;
-        *v = rand_vector(matrix->num_cols, &seed, stdout);
+        *v = rand_vector(coo->num_cols, &seed, stdout);
 
 
         // define values for testing and benchmarking
@@ -87,18 +87,57 @@ int main(int argc, char *argv[]) {
 
         // test coo spmv serially
         if (serial) {
-            snprintf(test_name, MAX_TEST_NAME_LEN, "serial: %s", graphs[i]);
+            snprintf(test_name, MAX_TEST_NAME_LEN, "serial coordinate SpMV: %s", graphs[i]);
             b = init_benchmark(get_cpu_name(), test_name);
 
             // run the test multiple times
             for (int t = 0; t < TEST_REPETITIONS; t++){
 
-                v2 = serial_coo_spmv(matrix, v, &b);
+                v2 = serial_coo_spmv(coo, v, &b);
 
                 // compare equality by transitive property
                 if (v1) {
                     check(vector_is_equal(v1, v2, stdout), "serial_coo_spmv(): produce results that are not consistent\n");
                 }
+                v1 = v2;
+            }
+
+            print_stats(&b, stdout);
+            free_benchmark(&b);
+        }
+
+        // test coo spmv multithreaded 
+        if (openmp) {
+            
+        }
+
+        // test coo spmv on opencl kernels
+        if (opencl) {
+
+        }
+
+
+        // translate the coordinate matrix to Compressed Sparse Row Matrix
+        csr_matrix *csr = (csr_matrix *) malloc(sizeof(csr_matrix));
+        *csr = coo_to_csr(coo, stdout);
+        free_coo(coo, 1);
+
+
+        // test csr spmv serially
+        if (serial) {
+            snprintf(test_name, MAX_TEST_NAME_LEN, "serial CSR SpMV: %s", graphs[i]);
+            b = init_benchmark(get_cpu_name(), test_name);
+
+            // run the test multiple times
+            for (int t = 0; t < TEST_REPETITIONS; t++){
+
+                v2 = serial_csr_spmv(csr, v, &b);
+
+                // compare equality by transitive property
+                if (v1) {
+                    check(vector_is_equal(v1, v2, stdout), "serial_csr_spmv(): produce results that are not consistent\n");
+                }
+                v1 = v2;
             }
 
             print_stats(&b, stdout);
@@ -106,7 +145,17 @@ int main(int argc, char *argv[]) {
         }
 
 
-        free_coo(matrix, 1);
+        // test csr spmv multithreaded 
+        if (openmp) {
+            
+        }
+
+        // test csr spmv on opencl kernels
+        if (opencl) {
+
+        }
+
+        
 
 
     }

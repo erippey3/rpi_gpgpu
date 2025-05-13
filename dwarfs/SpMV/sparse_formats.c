@@ -622,6 +622,9 @@ std_matrix csr_to_std(const csr_matrix* csr, FILE *log)
 	std.num_nonzeros = csr->num_nonzeros;
 	std.density_ppm = csr->density_ppm;
 
+	size_t bytes_needed = (size_t)std.num_rows * (size_t)std.num_cols * sizeof(float);
+	fprintf(log, "Attempting to allocate %.2f GiB\n", (double)bytes_needed / (1 << 30));
+
 	std.matrix = calloc (std.num_rows * std.num_cols, sizeof(float));
 	check(std.matrix != NULL, "sparse_formats.csr_to_std_matrix_bin_insertion(): eap Overflow - Cannot allocate memory for cstd.matrix\n");
 
@@ -825,6 +828,8 @@ coo_matrix load_matrix_market_to_coo(const char* filename, FILE* stream) {
 	}
 
     fclose(f);
+
+	qsort(coo.non_zero, coo.num_nonzeros, sizeof(triplet), triplet_comparator);
 
     unsigned long long total = (unsigned long long)rows * cols;
     coo.density_ppm = (unsigned int)(((unsigned long long)nnz * 1000000ULL) / total);

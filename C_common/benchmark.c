@@ -54,7 +54,7 @@ void print_stats(benchmark *b, FILE* stream) {
     fprintf(stream, "  Avg time  : %.6f s\n", avg_runtime(b));
     fprintf(stream, "  Min time  : %.6f s\n", b->min_time);
     fprintf(stream, "  Max time  : %.6f s\n", b->max_time);
-    fprintf(stream, "  Std Dev   : %.6f s\n", b->stddev);
+    fprintf(stream, "  Std Dev   : %.6f s\n\n", b->stddev);
 }
 
 void free_benchmark(benchmark *b) {

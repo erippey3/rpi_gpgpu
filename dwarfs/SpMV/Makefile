@@ -7,7 +7,7 @@ ifndef CC
 	CC = gcc
 endif
 
-CCFLAGS = -O3 -g3 -ffast-math -fopenmp -I $(CLVK_HEADERS) -I $(COMMON_DIR)
+CCFLAGS = -O0 -g3 -ffast-math -fopenmp -I $(CLVK_HEADERS) -I $(COMMON_DIR)
 LDFLAGS = -lm -lOpenCL -fopenmp -L$(CLVK_LIB)
 
 # Object files with path

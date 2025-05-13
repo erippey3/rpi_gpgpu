@@ -68,7 +68,7 @@ vector *serial_coo_spmv(const coo_matrix * m, const vector * v, benchmark *b){
 
     for (int i = 0; i < m->num_nonzeros; i++) {
         triplet curr = m->non_zero[i];
-        result->data[curr.i] = curr.v * v->data[curr.j];
+        result->data[curr.i] += curr.v * v->data[curr.j];
     }
 
     if (b) 
