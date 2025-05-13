@@ -34,7 +34,9 @@ void check_error(cl_int err, const char *operation, char *filename, int line);
 void check(int b,const char* msg);
 
 // https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
-#define FLT_EPSILON 0.00001
+
+#define REL_EPSILON 1e-5f
+#define ABS_EPSILON 1e-8f
 bool AlmostEqualRelative(float A, float B);
 
 

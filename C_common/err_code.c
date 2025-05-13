@@ -135,14 +135,10 @@ void check(int b,const char* msg)
 
 inline bool AlmostEqualRelative(float A, float B)
 {
-    // Calculate the difference.
     float diff = fabs(A - B);
-    A = fabs(A);
-    B = fabs(B);
-    // Find the largest
-    float largest = (B > A) ? B : A;
-
-    if (diff <= largest * FLT_EPSILON)
+    if (diff <= ABS_EPSILON)
         return true;
-    return false;
+
+    float largest = fmax(fabs(A), fabs(B));
+    return diff <= largest * REL_EPSILON;
 }
