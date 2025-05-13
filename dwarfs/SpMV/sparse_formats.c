@@ -727,3 +727,112 @@ void free_vector(vector* v, const unsigned int num_vecs){
 	}
 	free(v);
 }
+
+
+
+bool vector_is_equal(vector *v1, vector *v2, FILE *stream) {
+    if (v1->length != v2->length) {
+        fprintf(stream, "vector_is_equal(), v1 and v2 do not have the same length\n");
+        return false;
+    }
+
+    int mismatch_index = -1;
+
+    #pragma omp parallel for shared(mismatch_index) schedule(static)
+    for (int i = 0; i < v1->length; i++) {
+        if (mismatch_index != -1) continue; // early exit hint
+
+        if (v1->data[i] != v2->data[i]) {
+            #pragma omp critical
+            {
+                if (mismatch_index == -1) {
+                    mismatch_index = i;
+                }
+            }
+        }
+    }
+
+    if (mismatch_index != -1) {
+        fprintf(stream, "vector_is_equal(), at index %d, v1 (%6.2f) dne v2 (%6.2f)\n",
+                mismatch_index, v1->data[mismatch_index], v2->data[mismatch_index]);
+        return false;
+    }
+
+    return true;
+}
+
+
+
+
+coo_matrix load_matrix_market_to_coo(const char* filename, FILE* stream) {
+    coo_matrix coo = {0}; // Ensure default initialization
+    FILE* f = fopen(filename, "r");
+    if (!f) {
+        perror("Could not open Matrix Market file");
+        return coo;
+    }
+
+    char line[1024];
+    // Skip comments
+    do {
+        if (!fgets(line, sizeof(line), f)) {
+            fprintf(stderr, "Failed to read Matrix Market header.\n");
+            fclose(f);
+            return coo;
+        }
+    } while (line[0] == '%');
+
+    // Read dimensions
+    unsigned int rows, cols, nnz;
+    if (sscanf(line, "%u %u %u", &rows, &cols, &nnz) != 3) {
+        fprintf(stderr, "%s: Invalid matrix size line.\n", filename);
+        fclose(f);
+        return coo;
+    }
+
+    coo.num_rows = rows;
+    coo.num_cols = cols;
+    coo.num_nonzeros = nnz;
+    coo.non_zero = triplet_new_array(nnz);
+
+    unsigned int i, j;
+    double v;
+	for (unsigned int idx = 0; idx < nnz; ++idx) {
+		if (!fgets(line, sizeof(line), f)) {
+			fprintf(stderr, "%s: Failed to read line %u of matrix.\n", filename, idx + 1);
+			free(coo.non_zero);
+			coo.non_zero = NULL;
+			fclose(f);
+			return coo;
+		}
+
+		int i, j;
+		double v;
+		int parsed = sscanf(line, "%d %d %lf", &i, &j, &v);
+		if (parsed == 2) {
+			v = 1.0; // Implicit binary entry
+		} else if (parsed != 3) {
+			fprintf(stderr, "%s: Invalid line %u: \"%s\"\n", filename, idx + 1, line);
+			free(coo.non_zero);
+			coo.non_zero = NULL;
+			fclose(f);
+			return coo;
+		}
+
+		coo.non_zero[idx].i = i - 1;
+		coo.non_zero[idx].j = j - 1;
+		coo.non_zero[idx].v = (float)v;
+	}
+
+    fclose(f);
+
+    unsigned long long total = (unsigned long long)rows * cols;
+    coo.density_ppm = (unsigned int)(((unsigned long long)nnz * 1000000ULL) / total);
+
+    if (stream) {
+        fprintf(stream, "%s: Loaded %u x %u matrix with %u nonzeros (%u ppm)\n",
+                filename, coo.num_rows, coo.num_cols, coo.num_nonzeros, coo.density_ppm);
+    }
+
+    return coo;
+}

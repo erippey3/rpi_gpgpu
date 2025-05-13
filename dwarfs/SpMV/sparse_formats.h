@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 /*
  *  Copyright 2008-2009 NVIDIA Corporation
@@ -180,6 +181,10 @@ vector vector_new(unsigned int length);
 vector rand_vector(const unsigned int length, unsigned long* seed, FILE* log);
 void print_vector(const vector* v, FILE* stream);
 void free_vector(vector* v, const unsigned int num_vecs);
+
+bool vector_is_equal(vector *v1, vector *v2, FILE *stream);
+
+coo_matrix load_matrix_market_to_coo(const char* filename, FILE *stream);
 
 
 #endif
