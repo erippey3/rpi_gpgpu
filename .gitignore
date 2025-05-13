@@ -18,5 +18,5 @@ spmv
 # ==============================
 # Ignore dwarfs/SpMV/matrices directory
 # ==============================
-/dwarfs/SpMV/matrices/
+
 
