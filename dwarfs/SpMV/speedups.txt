@@ -1,72 +1,72 @@
 
-running test thread parallel coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 4.633466 speedup over running test serial coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 10.529842 speedup over running test serial coordinate SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 4.584226 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 15.370583 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 0.697156 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 1.534793 speedup over running test serial CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown lead to a 0.152077 speedup over running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device Unknown
+running test GPU CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.099853 speedup over running test thread parallel CSR SpMV: matrices/barrier2-2/barrier2-2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 3.114319 speedup over running test serial coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 1.421928 speedup over running test serial coordinate SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 2.946002 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 3.112906 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 1.345852 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 2.594856 speedup over running test serial CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown lead to a 0.456840 speedup over running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device Unknown
+running test GPU CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.833580 speedup over running test thread parallel CSR SpMV: matrices/belgium_osm/belgium_osm.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 5.540330 speedup over running test serial coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 12.230301 speedup over running test serial coordinate SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 4.370110 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 11.510143 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 0.820373 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 1.447304 speedup over running test serial CSR SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown lead to a 0.187724 speedup over running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device Unknown
+running test GPU CSR SpMV: matrices/ct20stif/ct20stif.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.125742 speedup over running test thread parallel CSR SpMV: matrices/ct20stif/ct20stif.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel coordinate SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 5.789122 speedup over running test serial coordinate SpMV: matrices/heart2/heart2.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 9.119980 speedup over running test serial coordinate SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 4.549200 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 12.697763 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 0.884617 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.892076 speedup over running test serial CSR SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device Unknown lead to a 0.194455 speedup over running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device Unknown
+running test GPU CSR SpMV: matrices/heart2/heart2.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.070255 speedup over running test thread parallel CSR SpMV: matrices/heart2/heart2.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 4.792878 speedup over running test serial coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 3.328758 speedup over running test serial coordinate SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 4.203144 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 11.829356 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 0.881808 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 1.360866 speedup over running test serial CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown lead to a 0.209797 speedup over running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device Unknown
+running test GPU CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.115041 speedup over running test thread parallel CSR SpMV: matrices/mac_econ_fwd500/mac_econ_fwd500.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 3.812580 speedup over running test serial coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+running test thread parallel coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 2.727182 speedup over running test serial coordinate SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 2.734644 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics lead to a 5.325771 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 0.373925 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 1.598788 speedup over running test serial CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 
 
-running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown lead to a 0.136736 speedup over running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device Unknown
+running test GPU CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device  NVIDIA Corporation GP107 [GeForce GTX 1050] (rev a1) lead to a 0.300198 speedup over running test thread parallel CSR SpMV: matrices/webbase-1M/webbase-1M.mtx on device AMD Ryzen 9 7945HX with Radeon Graphics
 

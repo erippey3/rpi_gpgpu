@@ -29,7 +29,8 @@ void __kernel csr(const unsigned int num_rows,
 
 // on the pi this is largely unsuccessful, it achieves similar if not slighly worse performance
 // larger tile sizes see drops in performance
-#define TILE_SIZE 32
+// accesses are no longer coalessed by threads within a group
+#define TILE_SIZE 8
 void __kernel csr_tiled(const unsigned int num_rows,
 		__global unsigned int * Ap, 
 		__global unsigned int * Aj, 
@@ -39,6 +40,8 @@ void __kernel csr_tiled(const unsigned int num_rows,
 {
 	unsigned int row = get_global_id(0) * TILE_SIZE;
 
+	
+	// also more branching
 	for (int i = row; i < row + TILE_SIZE; i++)
 	{
 		if(i < num_rows)
