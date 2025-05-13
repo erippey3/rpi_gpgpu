@@ -66,6 +66,9 @@ int main(int argc, char *argv[]) {
     if (!serial && !openmp && !opencl)
         return 0;
 
+    if (opencl)
+        init_cl(0, stdout);
+
     
 
     for (int i = 0; i < sizeof(graphs) / sizeof(char *); i++){
@@ -118,7 +121,7 @@ int main(int argc, char *argv[]) {
 
                 // compare equality by transitive property
                 if (v1) {
-                    check(vector_is_equal(v1, v2, stdout), "serial_coo_spmv(): produce results that are not consistent\n");
+                    check(vector_is_equal(v1, v2, stdout), "openmp_coo_spmv(): produce results that are not consistent\n");
                 }
                 v1 = v2;
             }
@@ -171,7 +174,7 @@ int main(int argc, char *argv[]) {
 
                 // compare equality by transitive property
                 if (v1) {
-                    check(vector_is_equal(v1, v2, stdout), "serial_csr_spmv(): produce results that are not consistent\n");
+                    check(vector_is_equal(v1, v2, stdout), "openmp_csr_spmv(): produce results that are not consistent\n");
                 }
                 v1 = v2;
             }
@@ -181,7 +184,22 @@ int main(int argc, char *argv[]) {
 
         // test csr spmv on opencl kernels
         if (opencl) {
+            snprintf(test_name, MAX_TEST_NAME_LEN, "GPU CSR SpMV: %s", graphs[i]);
+            b[4] = init_benchmark(get_gpu_name(), test_name);
 
+            // run the test multiple times
+            for (int t = 0; t < TEST_REPETITIONS; t++){
+
+                v2 = opencl_csr_spmv(csr, v, &b[4]);
+
+                // compare equality by transitive property
+                if (v1) {
+                    check(vector_is_equal(v1, v2, stdout), "opencl_csr_spmv(): produce results that are not consistent\n");
+                }
+                v1 = v2;
+            }
+
+            print_stats(&b[4], stdout);
         }
 
         

@@ -34,10 +34,6 @@ vector *openmp_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 }
 
 
-vector *openmp_std_spmv(const std_matrix *m, const vector *v, benchmark *b){
-    return NULL;
-}
-
 
 vector *openmp_coo_spmv(const coo_matrix * m, const vector * v, benchmark *b){
     check(m->num_cols == v->length, "spmv_serial.serial_coo_spmv(): matrix rows does not equal vector length\n");

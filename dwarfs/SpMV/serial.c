@@ -3,6 +3,8 @@
 #include "sparse_formats.h"
 #include "wtime.h"
 
+
+
 vector *serial_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
     check(m->num_cols == v->length, "spmv_serial.serial_csr_spmv(): matrix rows does not equal vector length\n");
     double start_time;
@@ -29,7 +31,10 @@ vector *serial_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 
 
 
-
+/*
+This method should be scrapped, no reasonable graph of any large size will fit on a 
+device with 8 gb of memory
+*/
 vector *serial_std_spmv(const std_matrix * m, const vector * v, benchmark *b){
     check(m->num_cols == v->length, "spmv_serial.serial_csr_spmv(): matrix rows does not equal vector length\n");
     double start_time;
