@@ -745,7 +745,7 @@ bool vector_is_equal(vector *v1, vector *v2, FILE *stream) {
     for (int i = 0; i < v1->length; i++) {
         if (mismatch_index != -1) continue; // early exit hint
 
-        if (v1->data[i] != v2->data[i]) {
+        if (!AlmostEqualRelative(v1->data[i], v2->data[i])) {
             #pragma omp critical
             {
                 if (mismatch_index == -1) {

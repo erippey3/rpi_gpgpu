@@ -24,12 +24,18 @@
 #include <CL/cl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+
 
 const char *err_code (cl_int err_in);
 
 void check_error(cl_int err, const char *operation, char *filename, int line);
 
 void check(int b,const char* msg);
+
+// https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+#define FLT_EPSILON 0.00001
+bool AlmostEqualRelative(float A, float B);
 
 
 #define checkError(E, S) check_error(E,S,__FILE__,__LINE__)

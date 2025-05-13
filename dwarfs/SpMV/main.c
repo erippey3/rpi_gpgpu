@@ -83,17 +83,18 @@ int main(int argc, char *argv[]) {
         char test_name[MAX_TEST_NAME_LEN];
         vector * v1 = NULL;
         vector * v2;
-        benchmark b;
+        // two types of graph representations time 3 device types
+        benchmark b[6];
 
         // test coo spmv serially
         if (serial) {
             snprintf(test_name, MAX_TEST_NAME_LEN, "serial coordinate SpMV: %s", graphs[i]);
-            b = init_benchmark(get_cpu_name(), test_name);
+            b[0] = init_benchmark(get_cpu_name(), test_name);
 
             // run the test multiple times
             for (int t = 0; t < TEST_REPETITIONS; t++){
 
-                v2 = serial_coo_spmv(coo, v, &b);
+                v2 = serial_coo_spmv(coo, v, &b[0]);
 
                 // compare equality by transitive property
                 if (v1) {
@@ -102,13 +103,27 @@ int main(int argc, char *argv[]) {
                 v1 = v2;
             }
 
-            print_stats(&b, stdout);
-            free_benchmark(&b);
+            print_stats(&b[0], stdout);
         }
 
         // test coo spmv multithreaded 
         if (openmp) {
-            
+            snprintf(test_name, MAX_TEST_NAME_LEN, "thread parallel coordinate SpMV: %s", graphs[i]);
+            b[1] = init_benchmark(get_cpu_name(), test_name);
+
+                        // run the test multiple times
+            for (int t = 0; t < TEST_REPETITIONS; t++){
+
+                v2 = openmp_coo_spmv(coo, v, &b[1]);
+
+                // compare equality by transitive property
+                if (v1) {
+                    check(vector_is_equal(v1, v2, stdout), "serial_coo_spmv(): produce results that are not consistent\n");
+                }
+                v1 = v2;
+            }
+
+            print_stats(&b[1], stdout);
         }
 
         // test coo spmv on opencl kernels
@@ -126,12 +141,12 @@ int main(int argc, char *argv[]) {
         // test csr spmv serially
         if (serial) {
             snprintf(test_name, MAX_TEST_NAME_LEN, "serial CSR SpMV: %s", graphs[i]);
-            b = init_benchmark(get_cpu_name(), test_name);
+            b[3] = init_benchmark(get_cpu_name(), test_name);
 
             // run the test multiple times
             for (int t = 0; t < TEST_REPETITIONS; t++){
 
-                v2 = serial_csr_spmv(csr, v, &b);
+                v2 = serial_csr_spmv(csr, v, &b[3]);
 
                 // compare equality by transitive property
                 if (v1) {
@@ -140,14 +155,28 @@ int main(int argc, char *argv[]) {
                 v1 = v2;
             }
 
-            print_stats(&b, stdout);
-            free_benchmark(&b);
+            print_stats(&b[3], stdout);
         }
 
 
         // test csr spmv multithreaded 
         if (openmp) {
-            
+            snprintf(test_name, MAX_TEST_NAME_LEN, "thread parallel CSR SpMV: %s", graphs[i]);
+            b[4] = init_benchmark(get_cpu_name(), test_name);
+
+            // run the test multiple times
+            for (int t = 0; t < TEST_REPETITIONS; t++){
+
+                v2 = openmp_csr_spmv(csr, v, &b[4]);
+
+                // compare equality by transitive property
+                if (v1) {
+                    check(vector_is_equal(v1, v2, stdout), "serial_csr_spmv(): produce results that are not consistent\n");
+                }
+                v1 = v2;
+            }
+
+            print_stats(&b[4], stdout);
         }
 
         // test csr spmv on opencl kernels
@@ -156,6 +185,11 @@ int main(int argc, char *argv[]) {
         }
 
         
+        if (serial && openmp){
+            print_speedup(b[0], b[1], stdout);
+            print_speedup(b[3], b[4], stdout);
+        }
+
 
 
     }

@@ -64,3 +64,15 @@ void free_benchmark(benchmark *b) {
     b->device_name = NULL;
     b->num_runs = 0;
 }
+
+
+double compare_speedup (const benchmark b1, const benchmark b2){
+    double speedup = (double)(b1.total_time / b1.num_runs) / (double)(b2.total_time / b2.num_runs);
+    return speedup;
+}
+
+
+void print_speedup(const benchmark b1, const benchmark b2, FILE *stream){
+    fprintf(stream, "\nrunning test %s on device %s lead to a %lf speedup over running test %s on device %s\n\n",
+    b2.test_name, b2.device_name, compare_speedup(b1, b2), b1.test_name, b1.device_name);
+}

@@ -23,6 +23,9 @@ double compute_stddev(const benchmark *b);
 void print_stats(benchmark *b, FILE* stream);
 void free_benchmark(benchmark *b);
 
+double compare_speedup (const benchmark b1, const benchmark b2);
+void print_speedup(const benchmark b1, const benchmark b2, FILE *stream);
+
 
 
 #endif //C_COMMON_BENCHMARK_H
