@@ -3,15 +3,18 @@
 #include "openmp.h"
 #include "opencl.h"
 #include "benchmark.h"
-#include "graph_gen.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <device_info.h>
+#include <err_code.h>
+
 
 #define TEST_REPETITIONS 15
+#define MAX_TEST_NAME_LEN 1024
 
 char *graphs[] = {"matrices/barrier2-2/barrier2-2.mtx", "matrices/belgium_osm/belgium_osm.mtx", "matrices/ct20stif/ct20stif.mtx", "matrices/heart2/heart2.mtx", "matrices/mac_econ_fwd500/mac_econ_fwd500.mtx", "matrices/webbase-1M/webbase-1M.mtx"};
 
@@ -66,12 +69,40 @@ int main(int argc, char *argv[]) {
     
 
     for (int i = 0; i < sizeof(graphs) / sizeof(char *); i++){
+        // load coordinate matrix from file as that is how .mtx are stored
         coo_matrix *matrix = (coo_matrix *) malloc(sizeof(coo_matrix));
-
         *matrix = load_matrix_market_to_coo(graphs[i], stdout);
 
+        // get a vector proportionate to the size of the matrix
+        vector * v = (vector *) malloc(sizeof(vector));
+        unsigned long seed = 0xdeadbeef;
+        *v = rand_vector(matrix->num_cols, &seed, stdout);
+
+
+        // define values for testing and benchmarking
+        char test_name[MAX_TEST_NAME_LEN];
+        vector * v1 = NULL;
+        vector * v2;
+        benchmark b;
+
+        // test coo spmv serially
         if (serial) {
-            
+            snprintf(test_name, MAX_TEST_NAME_LEN, "serial: %s", graphs[i]);
+            b = init_benchmark(get_cpu_name(), test_name);
+
+            // run the test multiple times
+            for (int t = 0; t < TEST_REPETITIONS; t++){
+
+                v2 = serial_coo_spmv(matrix, v, &b);
+
+                // compare equality by transitive property
+                if (v1) {
+                    check(vector_is_equal(v1, v2, stdout), "serial_coo_spmv(): produce results that are not consistent\n");
+                }
+            }
+
+            print_stats(&b, stdout);
+            free_benchmark(&b);
         }
 
 
