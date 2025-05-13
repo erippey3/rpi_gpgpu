@@ -51,7 +51,7 @@ void init_cl(int device_id, FILE *stream){
 
 }
 
-#define TILE_SIZE 32
+#define TILE_SIZE 8
 vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 
     cl_mem d_Ap, d_Aj, d_Ax, d_x, d_y;
@@ -101,35 +101,47 @@ vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 
 
     const size_t global[1] = {ceil((double)m->num_rows/TILE_SIZE)};
-    const size_t local[1] = {256}; // wait off on this
-    err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, global, local, 0, NULL, NULL);
+    const size_t local[1] = {64}; // wait off on this
+    err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, global, NULL, 0, NULL, NULL);
     checkError(err, "Enqueueing kernel");
 
     err = clFinish(commands);
 
     checkError(err, "Waiting for kernel to finish");
-
-
     if (b) 
     {
         double delta_time = wtime() - start_time;
         add_runtime(b, delta_time);
     }
 
+
     vector *results = (vector *) malloc (sizeof(vector));
     results->length = m->num_rows;
     results->data = (float *) malloc(sizeof(float) * results->length);
+
 
     err = clEnqueueReadBuffer(commands, d_y, CL_TRUE, 0, sizeof(float) * results->length,
         results->data, 0, NULL, NULL);
     
     checkError(err, "Reaing back d_y");
 
+    clReleaseMemObject(d_Ap);
+    clReleaseMemObject(d_Aj);
+    clReleaseMemObject(d_Ax);
+    clReleaseMemObject(d_x);
+    clReleaseMemObject(d_y);
+    clReleaseKernel(kernel);
+
     return results;
 }
 
 
-
 vector *opencl_coo_spmv(const coo_matrix *, const vector *, benchmark *b){
     return NULL;
+}
+
+void shutdown_cl(FILE *stream){
+    clReleaseProgram(program);
+    clReleaseCommandQueue(commands);
+    clReleaseContext(context);
 }
