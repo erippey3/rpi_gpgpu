@@ -1,0 +1,394 @@
+\documentclass[conference]{IEEEtran}
+ \IEEEoverridecommandlockouts
+ % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+ %Template version as of 6/27/2024
+ 
+ \usepackage{cite}
+ \usepackage{amsmath,amssymb,amsfonts}
+ \usepackage{algorithmic}
+ \usepackage{geometry}
+ \usepackage{graphicx}
+ \usepackage{textcomp}
+ \usepackage[table]{xcolor}
+ \usepackage{colortbl}
+ 
+ \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+ \begin{document}
+
+ \nocite{*}
+ 
+ \title{Hijacking the Embedded GPU: Accelerating Neural Network Inference on Raspberry Pi\\}
+ 
+ \author{\IEEEauthorblockN{1\textsuperscript{st} Eric Rippey}
+ \IEEEauthorblockA{\textit{Virginia Tech Computer Science Dept.} \\
+ Blacksburg, U.S.A \\
+ erippey3@vt.edu}
+ }
+ 
+ \maketitle
+ 
+ \begin{abstract}
+    In the evolving landscape of Industry 4.0, real-time processing and intelligent decision-making are 
+    paramount to optimizing industrial automation and smart manufacturing. However, the reliance on 
+    cloud-based computation introduces undesirable latency in time-sensitive applications. This 
+    proposal explores an unconventional approach: repurposing the embedded GPU found in the Raspberry Pi 5
+    to extract further performance from edge devices. Traditionally dedicated to rendering graphics, this GPU exhibits 
+    untapped computational potential that can be redirected to accelerate computationally heavy tasks 
+    such as running neural network inference. 
+    We outline a methodology to adapt and define GPU functionalities beyond their conventional 
+    scope, evaluate performance trade-offs, and present preliminary experimental insights. 
+    We intend to realize this functionality by porting OpenCL kernels to Vulkan, which the Pi 5's 
+    GPU supports. 
+ \end{abstract}
+ 
+ \begin{IEEEkeywords}
+ Embedded Systems, Neural Network, GPU Acceleration, Edge Computing, Raspberry Pi, OpenCL, Vulkan
+ \end{IEEEkeywords}
+ 
+ \section{Introduction}
+
+ The current era of industry is often referred to as Industry 4.0, or the fourth 
+ industrial revolution. It is marked by the shift in industry operations through the 
+ use of automation and smart technologies. This transformation has seen the emergence 
+ of smart factories and intelligent machines that significantly improve productivity and 
+ operational efficiency. Technology is at the center of this revolution, including the 
+ emergence of Internet of Things (IoT), Cloud Computing, Artificial Intelligence, Machine
+ Learning, and Edge Computing. These technologies provide a combination of real time data 
+ processing and adaptive decision making capabilities. 
+ 
+ In industry today a popular edge device commonly used is the Raspberry Pi. This is a low cost, 
+ low power, edge device with high configurability which makes it desirable for deployment and 
+ embedded applications. A common use case for the Raspberry Pi is for monitoring 
+ fields such as, temperature, humidity, light intensity, water level, power consumption, current, 
+ and voltage \cite{endres_iot_2022,mudaliar_iot_2020,kadiyala_global_2017}. 
+
+ Data collection tasks such as the ones outlined are only a single step of a larger picture.
+ Smart sensors and IoT devices are used in conjunction more computationally expensive algorithms that 
+ recognize patterns, detect anomalies, do classification, and make predictions 
+ to improve industry output  and increase efficiency. Artificial Neural Networks 
+ are particularly strong at these tasks. These more computationally expensive steps are not commonly 
+ done on the the edge devices themselves. This paper covers our attempt to utilize the popular edge device, 
+ the Raspberry Pi 5, to compute for more computationally expensive tasks with the end goal 
+ of being able to run neural network inference. This paper follows our attempt 
+ to leverage the embedded GPU of the Raspberry pi which is typically only used 
+ for graphical processing. This approach was aided by the clvk library, an open sourced implementation 
+ of OpenCL which translates its kernels to vulkan compute shaders. The process unfolded over 
+ multiple steps: initial capability testing of clvk on the Pi, benchmarking using Berkley Dwarfs, 
+ and analysis of the effectiveness of traditional optimizations.
+ 
+ The ultimate goal proposal was to determine the efficacy of 
+ using the Pi to perform more processing at the edge before sending data to the cloud.
+
+ \section{Motivation}
+
+ The current standard is to do data collection at the edge, and send 
+ the data to the cloud where all of the analysis is run. A literature 
+ review of Industry 4.0 strategies found that edge devices where most 
+ commonly used for data collection and that data was sent upstream 
+ for processing, machine learning, decision making, etc \cite{henao-hernandez_control_2019}. 
+ 
+ The largest issue with this approach is the  
+ high latency cost associated with moving data from the edge to the cloud 
+ for analysis. For most tasks, this is a good approach as the cloud is far 
+ more computationally capable and analysis is expensive. In time sensitive 
+ applications, high latency can be unideal. Examples of time sensitive tasks where 
+ decision making needs to be near instantaneous are in real time quality control,
+ broad area traffic control, predictive maintenance, autonomous vehicle object detection, 
+ and intelligent patient monitoring\cite{edge_ai}..
+
+ This research was initially inspired by the desire to recreate the work done in the paper titled 
+ "ComputeCOVID19+: Accelerating COVID-19 Diagnosis and Monitoring via High-Performance Deep Learning on CT Images"\cite{goel_computecovid19_2021}.
+ This paper outlines their work enhancing the resolution of low dosage CT images through their deep
+ learning approach called DenseNet Deconvolution Network, or DDnet. The end goal was to port the 
+ OpenCL inference implementation to leverage the GPU of the Raspberry Pi in aid of a mobile application for CT scanning.
+ This has applications such as giving accurate COVID-19 diagnosis within minutes of scanning\cite{goel_computecovid19_2021} as well as classifying
+and flagging mobile CT, X-ray, MRI scans for TB, pneumonia, microcalcifications, and stroke\cite{edge_device_machine_learning_poc}.
+ 
+ Several options exist for this task. We chose to use the Raspberry Pi Compute Module 5 for 
+ this study. The Raspberry Pi 5 and Compute Module Variant are a line of versatile single board computer 
+ that run between 2.5 and 12 watts. 
+ Raspberry Pi is the choice for this research for a few reasons. For one, 
+ it was chosen for its wide availability and acceptance. The Raspberry Pi 5 did over a million 
+ sales in its first 11 months of production\cite{king_revenue_2024}. It is a widely available between \$70-120 based on 
+ the memory capacity. Other options are available such as the NVidia Orin Jetson Nano and 
+ its Super variant as well as specialized devices such as the Google Coral TPU. Both of these devices 
+ boast more computational power. The Jetson Orin Nano Super, for example, specifically targets AI tasks.
+ It has a 6 core Arm CPU, 1024 CUDA cores, and 32 tensor cores, capable of 67 TOPS at 
+ 7-2k watts\cite{jetson_orin_nano}. However, the NVidia line of products are far more 
+ costly and consume more power. The Google TPU, while capable of 2 TOPS, is a specialized device whereas the Pi can 
+ do a myriad of tasks. Further, the Raspberry Pi is of interest because of its GPU, which 
+ for the most part has seen few use cases outside of display. We are interested in leveraging 
+ the compute power of the Pis GPU which has the potential to gain hold of untapped potential.
+ 
+ \section{Background}
+
+ The power of edge devices has improved drastically over the last decade. 
+ This has enabled more computation to happen closer to the edge. Comparing the 
+ first Raspberry Pi, released in 2012 compared to the Raspberry Pi 5, released in 
+ 2023, shows over a 150x improvement in CPU performance and 60x improvement in 
+ GPU performance in the last decade. These results where compiled from running 
+ Sysbench and GLMark2 on the CPU and GPU respectively.
+
+ The Raspberry Pi 5 is powered by the Broadcom BCM2712. This die consists of a 
+ 4 core, 4 thread CPU using the ARM architecture. Despite its impressive processing 
+ capabilities, the Pi 5 does not include a discrete GPU. Instead, it relies on the 
+ integrated Broadcom VideoCore VII, a graphics processor that supports OpenGL 
+ ES 3.1 and Vulkan 1.2. This chip is engineered with 12 cores, 128 shader units, 
+ and 8 execution units. The VideoCore VII is situated on the CPU die and utilizes 
+ dynamically allocated SDRAM, which is not shared with the CPU. 
+
+ Compared to a discrete GPU, the VideoCore VII is limited by both its operation support and 
+ its limited support of common heterogeneous programming languages. Both OpenGL ES and Vulkan are powerful
+ products of the Khronos Group. However, compared to standards like CUDA, OpenACC, and OpenCL, which 
+ are standards for parallel programming on heterogeneous systems, OpenGL ES and Vulkan are specifically 
+ graphics APIs. Being restricted to the graphics standards can be a difficult challenge when trying to 
+ perform general purpose compute on a GPU. As a result, using the GPU for computationally heavy tasks such as 
+ neural network inference are not natively supported.
+
+ To circumvent this limitation, tools like clvk can be used. clvk is an implementation of OpenCL 3.0 which uses 
+ clspv as its compiler. OpenCL 3.0 is a commonly used and portable compute language that can be used on 
+ many types of heterogeneous systems. clspv is a open sourced compiler for OpenCL built by Google. It 
+ transforms OpenCL C code into SPIR-V modules. SPIR-V modules are the common intermediate binary language that 
+ can be consumed by many Khronos Group standards including Vulkan and OpenCL. We plan to implement our code 
+ in OpenCL 3.0 standard using clvk and compile it into SPIR-V modules to be interpreted by Vulkan 1.2 which the 
+ VideoCore VII supports.
+
+ There is little in depth information available about the VideoCore VII architecture. However, 
+ the architecture guide for the VideoCore IV, which powers the Raspberry Pi 3 has been released\cite{broadcom2013videocore}.
+ the VideoCore IV 12 Quad Processors (QPUs). These are floating point shader processors that 
+ are 4-way SIMD multiplexed four ways to compute 16-way 32-bit SIMD processing. In other 
+ words, the processor executes the same instruction for four cycles on four different 4-way vectors, 
+ called 'quads'. The QPUs are organized into groups of four processors called slices. Slices share 
+ Instruction cache, Special Function Units, which compute reciprocals, reciprocal square root, 
+ logarithm, and exponential operations, as well as one or two Texture and Memory lookup Units.
+ All four QPUs in a slice execute the same set of instructions and re-synchronize afterward.
+ The QPUs support packing and unpacking 8 bit unsigned integers, 16 bit signed integers, and 16
+ bit floats into a single 32 bit value for vector arithmetic.
+
+
+ \section{Approach}
+
+ Before we are able to commit to rebuilding and optimizing each layer of the DenseNet Deconvolution Network,
+ we need to fully test the efficacy of using the GPU of the Raspberry Pi.
+
+ Our original plan was to implement a neural network based on DenseNet Deconvolutional Network from the ComputeCOVID19 paper.
+ Most important to our proposal, is their implementation of the neural network layers using OpenCL. This includes 
+ OpenCL kernels for convolution, pooling, unpooling, denseblock, and deconvolution. This gives us a good 
+ starting point to implement and port neural network layers to the Raspberry Pi. It has the added benefit 
+ of being able to lead into further research regarding mobile CT scanning and upscaling, another task which 
+ is potentially time sensitive or remote, where access to the cloud is limited. 
+
+ Our ultimate goal is to port the layers of DDnet from OpenCL to Vulkan using clvk. 
+ The reason we are choosing to port OpenCL kernels rather than writing proprietary 
+ neural layers in API languages the Pi natively supports is for the sake of future 
+ portability. OpenCL is a widely adopted platform which is able to be run or ported to 
+ most architectures. This allows for future work and research on other embedded architectures.
+
+ The largest constraints will be the limited compute power of the Raspberry Pi, and more
+ importantly, its lack of memory. We have recreated the 3D-DDnet model as described in the ComputeCOVID19 paper. 
+ This model was trained on a far more powerful system, with two 80 GB A100 GPUs. Training the model took 16 hours 
+ and 24 minutes on this system. However, running a single inference on a single 3D CT dataset can complete 
+ within seconds on CPUs with less than 32 cores. Running memory profiling on the model while doing inference 
+ shows it consumes 15 GB of memory at its peak. This provides a challenge as the Raspberry Pi come in 
+ 4, 8, and 16 GB models which will fail to accommodate inference of this model. Especially if we intend to run 
+ the inference on the GPU of the Raspberry Pi. Our exploration thus far leads us to believe the current model 
+ will not fit on even the 16 GB Raspberry Pi.
+
+ Thus far, we have explored the limitations of using the GPU of the Raspberry Pi 5. 
+ This has been done through a mix of examining the outputs of vulkaninfo and clinfo, 
+ as well as through compiling and running OpenCL kernels to Vulkan shaders to test the 
+ capabilities of the VideoCore VII. 
+ 
+ From testing 4GB and 8GB models of the Raspberry Pi 5, the GPU has access to half of the systems memory. 
+ The 4GB model has a global memory size of 2 GB and the 8 GB model has a global memory size of 4 GB. Other limitations 
+ have been found using OpenCL to Vulkan. OpenCL is unable to compile kernels with shorts, ushorts, longs, ulongs, doubles,
+ halfs, and trigonometric functions such as sin, cos, tan, etc. These errors are attributed to unsupported data 
+ types of the VideoCore VII. Other less explainable errors have occurred during preliminary testing. These include
+ kernels that contain booleans and chars causing the graphics pipeline to hang, preventing all future jobs sent to 
+ the GPU to fail to complete. This is something that needs further investigation as the VideoCore VII supports 8 bit 
+ operations. 
+
+
+
+ \begin{table*}[htbp]
+\renewcommand{\arraystretch}{1.2}
+\centering
+\resizebox{\textwidth}{!}{%
+ \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+ \hline
+ \rowcolor{black!20}
+ \textbf{Data Type} & \textbf{addition/subtraction} & \textbf{mult/div} & \textbf{mod} & \textbf{exp/exp2/exp10} & \textbf{log/log2/log10} & \textbf{pow} & \textbf{sqrt} & \textbf{sin/cos/tan/asin/acos/atan} & \textbf{floor/ceil/round/trunc/rint} & \textbf{fabs/fmin/fmax} & \textbf{mix/step/smoothstep} & \textbf{native\_sin/native\_exp/native\_log} \\
+ \hline
+ bool & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ char & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ uchar & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{red!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ short & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ ushort & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ half & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ int & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ uint & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ long & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ ulong & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ size\_t & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ float & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{orange!30} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} & \cellcolor{green!25} \\
+ \hline
+ double & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{orange!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} & \cellcolor{gray!30} \\
+ \hline
+ \end{tabular}
+ }
+ \vspace{0.5em}
+ \caption{Preliminary tests of supported operations.}
+ \label{table:supported-ops}
+
+ \vspace{0.5em}
+\noindent \textbf{Legend:}
+\begin{itemize}
+    \item \cellcolor{green!25} \textbf{Green} – Operation is supported
+    \item \cellcolor{red!30} \textbf{Red} – Causes program to hang
+    \item \cellcolor{orange!30} \textbf{Orange} – Unsupported or does not compile
+    \item \cellcolor{gray!30} \textbf{Gray} – Untested
+\end{itemize}
+ \end{table*}
+
+
+
+
+
+
+
+
+
+ Within the context of OpenCL, the Raspberry Pi has a few other limitations, these include a small local memory size of 
+ 16 KB, having a maximum work item size of 256 × 256 × 256 and having a maximum work group size of 256. Additional 
+ constraints of clvk include that each OpenCL context may only have 1 device and that clvk does not support out of order 
+ execution.
+
+ Before we are able to port kernels of the DDnet to run on the Pi, further exploration of the VideoCore VII is 
+ necessary. Testing basic matrix multiply kernels on the VideoCore VII found that traditional optimizations such 
+ as blocking hurt the performance of the kernel. Further understanding of the memory layout of the VideoCore VII is
+ needed to improve operational intensity and performance of simple kernels before moving to more complex ones such 
+ as the layers of the DDnet. We plan to further research optimizations made in the early years of general purpose 
+ GPU computing to see if any insights there transfer. We will explore per task granularity and group size granularity
+ to find out what runs the best on the underlying hardware. From there we plan to compare the performance of a simple 
+ kernel such as matrix multiply against a multithreaded CPU implementation for the A76 CPU as well as against traditional 
+ GPUs.
+
+ Based on the shortcomings of the initial work we plan to do more benchmarking work before attempting to implement layers 
+ of the DDnet. Because of the initial difficulties utilizing traditional optimizations on the VideoCore VII and 
+ due to the findings of microwave tomography algorithm running twice as slow on the VideoCore VI compared to the CPU \cite{vasileiou_accelerated_nodate}
+ we would like to step back and check the efficacy of running general purpose code on the Raspberry Pi's GPU by 
+ using the OpenDwarfs Benchmarking suite. The 13 Dwarfs are a 
+ set of fundamental algorithms that capture patterns in computation\cite{asanovic_landscape_2006}. They are useful in place of traditional benchmarks 
+ to evaluate a hardware and software based on the types of programs expected to be most common. Testing the dwarfs on
+ the Raspberry Pi's GPU for any noticeable performance benefits seems like a logical step to take before attempting 
+ to implement the layers of the DDnet architecture for the Pi. This step will also help us further understand 
+ what optimizations work well for the underlying hardware. Specifically we plan to test dense linear algebra 
+ and sparse linear algebra as they have are the most applicable in the field of artificial neural networks.
+
+ Further research towards implementing DDnet on the Raspberry Pi will unfold in stages. First, due to the initial limitations 
+ discovered on the Raspberry Pi, we will likely pivot to implementing a 2D-DDnet rather than the full 3D-DDnet 
+ as described in the ComputeCOVID19 paper. This has a far smaller memory footprint and can run in orders less time at 
+ the cost of accuracy and only computing a single layer of a CT image at a time. We plan to optimize the inference 
+ based on the findings of prior tests. If the VideoCore VII of the Raspberry Pi shows promise of performance, 
+ we hope to have a working 2D-DDnet inference at the end of this research.
+ 
+
+ \section{Anticipated Results}
+
+ We have already gotten programs to compile and run on the GPU of the Raspberry Pi through the use of clvk. 
+ We anticipate that we will run many variations of simple kernels such as matrix multiply, dense linear algebra, 
+ and sparse linear algebra with different mappings and granularity. We intend to benchmark them all to find the most 
+ performant to better understand how to improve the operational intensity on the underlying hardware. We intend to 
+ report on the common themes between all kernels that improve performance and be able to explain why 
+ certain optimizations work on the VideoCore VII over others. 
+
+ We anticipate being able to come to a conclusion on the efficacy of hijacking the GPU of the Pi using clvk for 
+ future work based on the performance results of our testing. We plan to produce performance results and 
+ runtime analysis of the a kernel running on the VideoCore VII versus a discrete GPU, the CPU of the Raspberry Pi, 
+ and potentially other devices. From this we will be able to draw conclusions specifically on the performance 
+ of OpenCL performance on the Pi using clvk. We do not intend to draw conclusions about the performance of the 
+ VideoCore VII as a whole but rather the combination of the VideoCore VII hardware and the clvk software. 
+ If we are unhappy with the results, further test could be to compare benchmarks of clvk to a natively 
+ implemented solution in Vulkan or OpenGL ES.
+
+ If the results of the Dwarfs benchmarks are promising, we intend to move forward with reproducing 2D-DDnet 
+ inference kernels in OpenCL. We plan to then gather results on the runtime of inference on the VideoCore VII. 
+ From these results, we intend on drawing conclusions on the efficacy of hijacking the GPU of the Raspberry Pi 
+ to run inference on ANNs. Further studies could look into implementing inference on a more powerful device such as a TPU or AI board like 
+ the Jetson Orin Nano and comparing the runtime results. 
+
+
+
+  \subsection{Related Work}
+
+ Related to programming for the Raspberry Pis GPU, there is has been little work done. 
+ The book "Raspberry Pi GPU Audio Video Programming" by Jan Newmarch looks at writing 
+ programs for the GPU through OpenGL, OpenMAX, and OpenVG\cite{newmarch2017raspberry}. It looks at GPU programming 
+ through the audio and video points of view rather than programming to the GPU as 
+ a general purpose device. There are also a myriad of Papers that look Fast Fourier Transformations 
+ (FFTs) utilizing the GPU. These studies utilize GPU\_FFT, a program written by Andrew Holme in 2014\cite{holme_gpu_fft}.
+ This implementation was written directly in bytecode to utilize the V3D block of the BCM2835, the chip 
+ of the Raspberry Pi 1. A spinoff paper also looked at a Vulkan FFT implementation to leverage the GPU\cite{he_comparing_2018}. 
+ There have been papers which look at Optimizing OpenCL code for the Raspberry Pi. However, these papers
+ look at writing OpenCL code that efficiently maps to the Pi's CPU.
+
+ One paper which takes our proposed approach of compiling OpenCL code to Vulkan compute shaders using clvk\cite{vasileiou_accelerated_nodate}.
+ Their research was on using heterogeneous systems to reconstruct 3D microwave tomography images from measuring 
+ electromagnetic signals. Their paper states their research can benefit from relatively low power portable technology. 
+ When running on the Raspberry Pi 4, their algorithm took over twice as long to run on the VideoCore VI as it took 
+ to run on the Raspberry Pi's CPU. 
+
+ This area of research heavily reflects research done in the mid 2000's to bring general purpose compute to 
+ graphics hardware. During that time, GPUs where advancing from 8 bit chanel color value pipelines to 
+ fully programmable vectorized floating point operation pipelines\cite{owens_survey_2007}. GPUs of this time 
+ structure their computation into heavily parallelized graphics pipelines consisting of vertex operations, 
+ privative assembly, rasterization, fragment operations, and compression into an image. The common languages to 
+ interface with the GPU at the time where all based on the idea that the GPU would generate images. Such examples 
+ of languages included Cg, HLSL, OpenGL, and Sh. At this time there where early languages and libraries which attempted 
+ to map mathematical operations on memory (kernels) to shader streams.  Such examples included Accelerator by Microsoft 
+ Research, CGiS, and Brook Programming Language. Early papers from this time explored crucial data parallel 
+ tasks and data structures such as map, reduce, scatter and gather, sorting, dense arrays, sparse arrays, 
+ and dynamic sparse arrays. Combining these ideas, complex algorithms are explored on GPUs such as differential 
+ equations, linear algebra, and data queries. 
+ 
+ As seen in the case of the microwave tomography images study, simply having access to heavily parallel hardware 
+ does not guarantee an improvement in performance. Since the hardware of the Raspberry Pi is specifically tailored 
+ to rendering graphics similar to early GPUs, we hypothesize that modern optimizations may not all work. 
+ Looking further into specific optimizations made during the era of early general purpose GPU programming will likely
+ be the best source help when programming for the Pi. 
+
+
+
+ 
+
+ \section{Conclusion}
+
+ In summary, this proposal aims to explore the untapped potential of the Raspberry Pi 5’s embedded GPU for 
+ accelerating neural network inference. By leveraging the Broadcom VideoCore VII through a strategic porting 
+ of OpenCL kernels to Vulkan, the research intends to address key challenges related to latency and power 
+ consumption in edge computing environments. While preliminary expectations suggest that the performance 
+ improvements may be incremental due to inherent architectural constraints, the insights gained will provide a 
+ foundation for future optimizations and potential adaptations to other embedded platforms. Ultimately, this 
+ work seeks to contribute to the broader field of Industry 4.0 by enhancing the computational capabilities of 
+ low-cost, low-power devices, thus opening new avenues for real-time, on-device intelligence.
+ 
+ \bibliographystyle{IEEEtran}  % or another style, e.g., plain, unsrt, etc.
+ \bibliography{5234ProjectProposal}
+ 
+ 
+ \vspace{12pt}
+ 
+ \end{document}
+ 

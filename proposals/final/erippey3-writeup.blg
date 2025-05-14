@@ -1,0 +1,58 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: erippey3-writeup.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: 5234ProjectProposal.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty journal in asanovic_landscape_2006
+
+Done.
+You've used 20 entries,
+            4087 wiz_defined-function locations,
+            967 strings with 13381 characters,
+and the built_in function-call counts, 16151 in all, are:
+= -- 1308
+> -- 414
+< -- 109
++ -- 235
+- -- 103
+* -- 913
+:= -- 2512
+add.period$ -- 43
+call.type$ -- 20
+change.case$ -- 27
+chr.to.int$ -- 252
+cite$ -- 21
+duplicate$ -- 1126
+empty$ -- 1226
+format.name$ -- 93
+if$ -- 3656
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 217
+newline$ -- 121
+num.names$ -- 22
+pop$ -- 499
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1160
+stack$ -- 0
+substring$ -- 693
+swap$ -- 959
+text.length$ -- 25
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 20
+warning$ -- 1
+while$ -- 60
+width$ -- 22
+write$ -- 266
+(There was 1 warning)
