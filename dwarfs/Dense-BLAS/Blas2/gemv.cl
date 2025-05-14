@@ -9,6 +9,8 @@ __kernel void gemv_blocked(
     __local float* x_tile) // shared tile of x
 {
     int row = get_global_id(0);
+
+    if (row >= M) return;
     int lid = get_local_id(0);
     int group_size = get_local_size(0);
 
