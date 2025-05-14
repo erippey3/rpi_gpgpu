@@ -21,3 +21,9 @@ rpiplayground - a set of repositories based on hobbyist decompilations of
 assembly for the VideoCore IV which could proove useful in later tests 
 for more efficient and performant interfacing with the VideoCore VII of the 
 Raspberry Pi 5.
+
+All executables require either a compiled version of clvk or OpenCL. Each task has its own make file. Running make should be substantial to compile the program. 
+If you would like to use OpenCL, remove Linking of CLVK from the compiler flags of each 
+makefile.
+
+https://github.com/erippey3/rpi_gpgpu
