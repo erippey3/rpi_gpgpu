@@ -4,6 +4,9 @@
 #include "sparse_formats.h"
 #include <stdio.h>
 
+
+// This was a scrapped idea to generate a lot of random graphs before 
+// I decided to download preexisting graphs
 void generate_random_graphs(const char *matrix_path, FILE *log);
 
 //void generate_example_graphs(const char *matrix_path, FILE *log);
