@@ -1,6 +1,6 @@
 CLVK_HEADERS = /opt/clvk/external/OpenCL-Headers/
 CLVK_LIB = /opt/clvk/build/
-COMMON_DIR = ../../C_common
+COMMON_DIR = ../../../C_common
 OBJ_DIR = obj
 
 ifndef CC

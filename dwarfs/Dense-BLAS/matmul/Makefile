@@ -9,6 +9,7 @@ COMMON_DIR = ../C_common
 #          Modified by Tom Deakin and Simon McIntosh-Smith, October 2012
 #          Modified by Tom Deakin, July 2013
 #          Modified by Tom Deakin, October 2014
+# 		   Modified by Eric Rippey, April 2025
 #
 
 ifndef CC
@@ -19,7 +20,7 @@ CCFLAGS=-O3 -std=c99 -ffast-math -I $(CLVK_HEADERS) -I $(COMMON_DIR)
 
 LIBS = -lm -lOpenCL -fopenmp -L $(CLVK_LIB) 
 
-MMUL_OBJS = wtime.o
+MMUL_OBJS = wtime.o err_code.o
 EXEC = mult
 
 
@@ -29,6 +30,9 @@ mult: $(MMUL_OBJS) matmul.c matrix_lib.c
 	$(CC) $^ $(CCFLAGS) $(LIBS) -o $(EXEC)
 
 wtime.o: $(COMMON_DIR)/wtime.c
+	$(CC) -c $^ $(CCFLAGS) -o $@
+
+err_code.o:  $(COMMON_DIR)/err_code.c
 	$(CC) -c $^ $(CCFLAGS) -o $@
 
 .c.o: 

@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 // OpenCL matrix multiplication ... Naive
 //--------------------------------------------------------------------------------
 
-    kernelsource = getKernelSource("../C_elem.cl");
+    kernelsource = getKernelSource("C_elem.cl");
     // Create the comput program from the source buffer
     program = clCreateProgramWithSource(context, 1, (const char **) & kernelsource, NULL, &err);
     checkError(err, "Creating program with C_elem.cl");
@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
 //--------------------------------------------------------------------------------
 // OpenCL matrix multiplication ... C row per work item
 //--------------------------------------------------------------------------------
-    kernelsource = getKernelSource("../C_row.cl");
+    kernelsource = getKernelSource("C_row.cl");
     // Create the comput program from the source buffer
     program = clCreateProgramWithSource(context, 1, (const char **) & kernelsource, NULL, &err);
     checkError(err, "Creating program with C_row.cl");
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 //--------------------------------------------------------------------------------
 // OpenCL matrix multiplication ... C row per work item, A row in pivate memory
 //--------------------------------------------------------------------------------
-    kernelsource = getKernelSource("../C_row_priv.cl");
+    kernelsource = getKernelSource("C_row_priv.cl");
     // Create the comput program from the source buffer
     program = clCreateProgramWithSource(context, 1, (const char **) & kernelsource, NULL, &err);
     checkError(err, "Creating program with C_row_priv.cl");
@@ -338,7 +338,7 @@ int main(int argc, char *argv[])
 //--------------------------------------------------------------------------------
 // OpenCL matrix multiplication ... C row per work item, A row pivate, B col local
 //--------------------------------------------------------------------------------
-    kernelsource = getKernelSource("../C_row_priv_bloc.cl");
+    kernelsource = getKernelSource("C_row_priv_bloc.cl");
     // Create the comput program from the source buffer
     program = clCreateProgramWithSource(context, 1, (const char **) & kernelsource, NULL, &err);
     checkError(err, "Creating program with C_row_priv_bloc.cl");
@@ -409,7 +409,7 @@ int main(int argc, char *argv[])
 //--------------------------------------------------------------------------------
 // OpenCL matrix multiplication ... blocked
 //--------------------------------------------------------------------------------
-    kernelsource = getKernelSource("../C_block_form.cl");
+    kernelsource = getKernelSource("C_block_form.cl");
     // Create the comput program from the source buffer
     program = clCreateProgramWithSource(context, 1, (const char **) & kernelsource, NULL, &err);
     checkError(err, "Creating program with C_block_form.cl");
