@@ -19,6 +19,9 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
+
+ * This file has been modified by Eric Rippey, May 2025 for the purposes of conducting 
+ * research on the Raspberry Pi GPU
  */
 
 
