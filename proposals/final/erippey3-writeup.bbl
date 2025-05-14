@@ -118,4 +118,13 @@ A.~Kharat, V.~A. Duddalwar, K.~Saoji, A.~Gaikwad, V.~Kulkarni, G.~Naik, R.~Lokwa
 {NVIDIA Corporation}, ``Jetson orin nano developer kit datasheet,'' NVIDIA Corporation, Tech. Rep. 3575392-R2, 2023, accessed: 2025-04-11. [Online]. Available: \url{https://nvdam.widen.net/s/zkfqjmtds2/jetson-orin-datasheet-nano-developer-kit-3575392-r2}
 \BIBentrySTDinterwordspacing
 
+\bibitem{krommydas2016opendwarfs}
+K.~Krommydas, W.-c. Feng, C.~D. Antonopoulos, and N.~Bellas, ``Opendwarfs: Characterization of dwarf-based benchmarks on fixed and reconfigurable architectures,'' \emph{Journal of Signal Processing Systems}, vol.~85, pp. 373--392, 2016.
+
+\bibitem{filippone2017sparse}
+S.~Filippone, V.~Cardellini, D.~Barbieri, and A.~Fanfarillo, ``Sparse matrix-vector multiplication on gpgpus,'' \emph{ACM Transactions on Mathematical Software (TOMS)}, vol.~43, no.~4, pp. 1--49, 2017.
+
+\bibitem{davis2011university}
+T.~A. Davis and Y.~Hu, ``The university of florida sparse matrix collection,'' \emph{ACM Transactions on Mathematical Software (TOMS)}, vol.~38, no.~1, pp. 1--25, 2011.
+
 \end{thebibliography}

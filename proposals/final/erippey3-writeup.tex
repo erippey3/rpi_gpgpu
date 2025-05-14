@@ -11,6 +11,8 @@
  \usepackage{textcomp}
  \usepackage[table]{xcolor}
  \usepackage{colortbl}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
  
  \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
      T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -18,7 +20,7 @@
 
  \nocite{*}
  
- \title{Hijacking the Embedded GPU: Accelerating Neural Network Inference on Raspberry Pi\\}
+ \title{Hijacking the Embedded GPU: Accelerating computation on Raspberry Pi\\}
  
  \author{\IEEEauthorblockN{1\textsuperscript{st} Eric Rippey}
  \IEEEauthorblockA{\textit{Virginia Tech Computer Science Dept.} \\
@@ -170,46 +172,123 @@ and flagging mobile CT, X-ray, MRI scans for TB, pneumonia, microcalcifications,
  \section{Approach}
 
  Before we are able to commit to rebuilding and optimizing each layer of the DenseNet Deconvolution Network,
- we need to fully test the efficacy of using the GPU of the Raspberry Pi.
+ we need to fully test the efficacy of using the GPU of the Raspberry Pi. The first step in this process was to 
+ better understand the capabilities of clvk and the VideoCore VII. All Raspberry Pi tests where performed on a 
+ Raspberry Pi 5, 8GB model. clvk and its dependencies where installed and linked as part of each makefile for every 
+ executable made during research. The VideoCore VII is a has 32 bit ALUs made septically for graphics processing so 
+ it was unclear what operations and data types where supported. Our first task was to create a set of C and OpenCL kernels 
+ that would encompass all data types and operations we would commonly encounter in high performance computing. We further 
+ gathered and cross referenced the outputs from vulkaninfo and clinfo to check if the results from our tests look consistent 
+ with what the underlying system claims to support.
 
- Our original plan was to implement a neural network based on DenseNet Deconvolutional Network from the ComputeCOVID19 paper.
- Most important to our proposal, is their implementation of the neural network layers using OpenCL. This includes 
- OpenCL kernels for convolution, pooling, unpooling, denseblock, and deconvolution. This gives us a good 
- starting point to implement and port neural network layers to the Raspberry Pi. It has the added benefit 
- of being able to lead into further research regarding mobile CT scanning and upscaling, another task which 
- is potentially time sensitive or remote, where access to the cloud is limited. 
+ Once we had a baseline of what the the constraints of using clvk on the Raspberry Pi, we needed to benchmark the performance 
+ of the GPU. Berkeley Dwarfs are a well known set of 13 benchmarks that are made to evaluate the efficacy of a variety of 
+ different processors based on trends on common execution patters \cite{krommydas2016opendwarfs}. We built benchmarks based on two 
+ such Dwarfs: Sparse Matrix Vector Algebra and Dense Matrix Vector Algebra. These two benchmarks where chosen because, 
+ out of the 13, Sparse and Dense Matrix Vector Algebra are the most common execution patters as seen in artificial neural network 
+ inference. Further, sparse and dense matrix vector algebra represent two different types of memory access patters. 
 
- Our ultimate goal is to port the layers of DDnet from OpenCL to Vulkan using clvk. 
- The reason we are choosing to port OpenCL kernels rather than writing proprietary 
- neural layers in API languages the Pi natively supports is for the sake of future 
- portability. OpenCL is a widely adopted platform which is able to be run or ported to 
- most architectures. This allows for future work and research on other embedded architectures.
+ Sparse matrices are ubiquitous across many domains. They are seen in everything from circuit design, to economics. Sparse 
+ Matrix Vector Multiplication (SpMV) is a computation defined by random access patterns, making it a bandwidth bound computation \cite{filippone2017sparse}.
+ Because sparse matrices are mostly filled with zeros, they can be restructured to save space, reduce computation, and regularize access patters.
+ For general Sparse Matrix Vector Multiplication, two data structures are commonly seen, compressed sparse row matrices and 
+ coordinate matrices. Compressed sparse row matrices hold three arrays. There is an array that holds the 
+ value and an array which holds the column index of each non zero element. These arrays are ordered by row in ascending order. 
+ The last array holds a pointer to the beginning of each rows non zero elements. This data structure gives fast access to consecutive 
+ elements in a row but is particularly inefficient for column major access. Coordinate matrices contain a single array of triplets. Each 
+ non zero element explicitly holds the value to its row index, column index, and value. Each non zero element is sorted in the array 
+ based on row major access patterns.
 
- The largest constraints will be the limited compute power of the Raspberry Pi, and more
- importantly, its lack of memory. We have recreated the 3D-DDnet model as described in the ComputeCOVID19 paper. 
- This model was trained on a far more powerful system, with two 80 GB A100 GPUs. Training the model took 16 hours 
- and 24 minutes on this system. However, running a single inference on a single 3D CT dataset can complete 
- within seconds on CPUs with less than 32 cores. Running memory profiling on the model while doing inference 
- shows it consumes 15 GB of memory at its peak. This provides a challenge as the Raspberry Pi come in 
- 4, 8, and 16 GB models which will fail to accommodate inference of this model. Especially if we intend to run 
- the inference on the GPU of the Raspberry Pi. Our exploration thus far leads us to believe the current model 
- will not fit on even the 16 GB Raspberry Pi.
+ To evaluate the performance of the Raspberry Pi, Sparse Matrix Vector Multiplication (SpMV) was implemented using serial 
+ code, OpenMP, and OpenCL. The serial and OpenMP versions were developed for both coordinate (COO) and compressed sparse 
+ row (CSR) formats. For OpenCL, only the CSR format was implemented. This is because GPUs, particularly on devices like 
+ the Raspberry Pi, lack efficient mechanisms for synchronizing writes across threads. The COO format requires reduction 
+ of multiple values into the same output vector entry, which is nontrivial to do efficiently without atomics or complex 
+ thread coordination. In contrast, CSR enables each thread to process an entire row independently, avoiding race conditions 
+ and making it more suitable for GPU acceleration.
 
- Thus far, we have explored the limitations of using the GPU of the Raspberry Pi 5. 
- This has been done through a mix of examining the outputs of vulkaninfo and clinfo, 
- as well as through compiling and running OpenCL kernels to Vulkan shaders to test the 
- capabilities of the VideoCore VII. 
- 
- From testing 4GB and 8GB models of the Raspberry Pi 5, the GPU has access to half of the systems memory. 
+ In order to test our implementation on a variety of sparse matrices, we collected matrices from the SuiteSparse Matrix Collection, 
+ by the University of Florida \cite{davis2011university}. We tried to collect a wide variety of sparse graphs that cover the 
+ scope of densities, sizes, shapes, and applications. The matrices used are defined in table 1.
+
+ \begin{table}[htbp]
+\caption{Sparse Matrices Used in Evaluation}
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{|l|l|r|r|r|}
+\hline
+\rowcolor{gray!20}
+\textbf{Name} & \textbf{Application} & \textbf{Rows} & \textbf{Cols} & \textbf{Nonzeros} \\
+\hline
+barrier2-2     & Circuit Simulation     & 113{,}076 & 113{,}076 & 3{,}805{,}068 \\
+webbase-1M     & Web Graph              & 1{,}000{,}005 & 1{,}000{,}005 & 3{,}105{,}536 \\
+ct20stif      & Structural             &52{,}329 &52{,}329 &1{,}375{,}396 \\
+heart2       & 2D/3D Problem        &2{,}339 &2{,}339 &682{,}797 \\
+mac\_econ\_fwd500    & Economics          &206{,}500 &206{,}500 &12{,}733{,}898 \\
+\hline
+\end{tabular}
+\label{tab:sparse_matrices}
+\end{table}
+
+
+The structs and kernels defined in the Virginia Tech OpenDwarfs research where used as a starting point for our work 
+on a sparse matrix vector multiplication implementation\cite{krommydas2016opendwarfs}.
+The serial implementation for both coordinate matrices and compressed sparse row where straight forward. The OpenMP 
+implementation of compressed spare row also required little modification. Work was divided by the row. Where each 
+thread would be assigned a set of rows based on chunk size. Because there is no guarantee there will be a consistent 
+number of non zero elements from one row to the next, dynamic scheduling was used. Extra synchronization was required to 
+parallelize the coordinate matrix vector multiplication. Because not all non zero elements within a row are guaranteed to 
+be assigned to the same thread, there is a possible race condition when writing to the resulting vector. To aid in performance 
+and to take advantage of the fact that coordinate vectors are sorted by row major access each thread will keep track of the most recent 
+row it has calculated a sum for and keep a update a local sum variable as long as all subsequent non zero elements are a part 
+of the same row. At a boundary between rows, each thread will atomically update the global resultant vector and reset its local sum. 
+This ensures that each thread only has to do a single atomic write per row it dues calculations for. The OpenCL implementation of 
+SpMV distributed work based on row as well. Each worker was given a row it was responsible. Each worker would locally sum the 
+product of all non zero elements in its row with their associated vector value. A second optimization that was attempted was 
+tiling. Instead of assigning one row per worker, a tile size was defined and each worker would be responsible for that number 
+of consecutive rows. The though process was twofold. This would balance the execution of threads as some rows may be vacant compared 
+to others. Further, for some kinds of graphs in particular diagonal graphs, rows close together access similar vector indices promoting locality.
+
+To implement dense linear algebra benchmarks, we chose to implement level 1, 2, and 3 Basic Linear Algebra Subroutines (BLAS). 
+BLAS are a set of vector matrix operations that complete in \(O(n), O(n^2), \text{and} O(n^3)\) time respectively. Amongst these 
+subroutines we implemented dense dot product, axpy, scale, general matrix vector multiplication, and general matrix matrix multiplication.
+Due to the regular access patterns of all of these subroutines, they are generally compute bound operations. To test level 1 
+BLAS operations, we measured throughput. All of these subroutines run in O(n) time and complete very fast. Because of this, 
+we found it was not worth measuring the speedup of a single operation but rather the amount of operations that could be completed in 
+a given time. Dot product, axpy, and scale where implemented serially and in OpenMP. Dot product was not implemented in OpenCL 
+as it requires a reduction and GPUs, especially those as limited as the VideoCore VII, have limited writing synchronization
+methods. Dot product is such a fast method that the room for synchronization overhead is incredibly small if speedups are to 
+be achieved. For axpy and scale, each thread was assigned a single element of the vector to calculate and the only optimizations 
+attempted where to change the local group size.
+
+Next, general matrix matrix multiplication (GEMM) was attempted. Implementations for GEMM where built upon OpenCL examples from 
+the Khronos Initiative for Training and Education and University of Bristol. A number of kernels with different access structures 
+and work distributions where attempted. The first OpenCL kernel assigned a single element of the resultant vector per thread.
+The next kernel assigned an entire resultant row to a thread. The next two kernels attempted to use local and private memory of 
+the GPU to store rows and columns of matrix. The last kernel took a blocked approach to amortize column major access of the second matrix.
+Due to the success of the blocked approach, which will be covered in the results, a blocked approach was used for the general matrix vector 
+multiplication as well. This was compared against an OpenMP and serial implementation of general matrix vector multiplication.
+
+In order to test if GPU optimizations where consistent between the Raspberry Pi and a traditional GPGPU, test results from the 
+Raspberry Pi where cross referenced against results from a system with a GTX 1050.
+
+
+
+
+
+
+ \section{Results}
+
+
+  From testing 8GB model of the Raspberry Pi 5, the GPU has access to half of the systems memory. 
  The 4GB model has a global memory size of 2 GB and the 8 GB model has a global memory size of 4 GB. Other limitations 
  have been found using OpenCL to Vulkan. OpenCL is unable to compile kernels with shorts, ushorts, longs, ulongs, doubles,
  halfs, and trigonometric functions such as sin, cos, tan, etc. These errors are attributed to unsupported data 
  types of the VideoCore VII. Other less explainable errors have occurred during preliminary testing. These include
  kernels that contain booleans and chars causing the graphics pipeline to hang, preventing all future jobs sent to 
  the GPU to fail to complete. This is something that needs further investigation as the VideoCore VII supports 8 bit 
- operations. 
-
-
+ operations. Particularly, we would like to look into if it is possible to use clvk and by extension OpenCL to support 
+ packing 8 bit values into 32 bit variables.
 
  \begin{table*}[htbp]
 \renewcommand{\arraystretch}{1.2}
@@ -263,71 +342,58 @@ and flagging mobile CT, X-ray, MRI scans for TB, pneumonia, microcalcifications,
  \end{table*}
 
 
-
-
-
-
-
-
-
  Within the context of OpenCL, the Raspberry Pi has a few other limitations, these include a small local memory size of 
  16 KB, having a maximum work item size of 256 × 256 × 256 and having a maximum work group size of 256. Additional 
  constraints of clvk include that each OpenCL context may only have 1 device and that clvk does not support out of order 
  execution.
 
- Before we are able to port kernels of the DDnet to run on the Pi, further exploration of the VideoCore VII is 
- necessary. Testing basic matrix multiply kernels on the VideoCore VII found that traditional optimizations such 
- as blocking hurt the performance of the kernel. Further understanding of the memory layout of the VideoCore VII is
- needed to improve operational intensity and performance of simple kernels before moving to more complex ones such 
- as the layers of the DDnet. We plan to further research optimizations made in the early years of general purpose 
- GPU computing to see if any insights there transfer. We will explore per task granularity and group size granularity
- to find out what runs the best on the underlying hardware. From there we plan to compare the performance of a simple 
- kernel such as matrix multiply against a multithreaded CPU implementation for the A76 CPU as well as against traditional 
- GPUs.
+ As for the benchmarks, the results where largely disappointing. Sparse Matrix Vector multiplication performed poorly 
+ on the GPU. The average speedup over the serial implementation was 1.29x across the 6 graphs. Further, tiling did not improve 
+ performance. It either stayed the same or performed worse. This is likely because each task maps well enough to the hardware, memory 
+ accesses between threads in a group are no longer coalesced, and tiling introduces a new branch in the CL kernel. This was consistent 
+ between both the VideoCore VII and the GTX 1050. In neither case did tiling improve performance. In any case, the current OpenCL SpMV 
+ implementation is less performant on the VideoCore VII than a multithreaded implementation on the Raspberry Pis CPU.
 
- Based on the shortcomings of the initial work we plan to do more benchmarking work before attempting to implement layers 
- of the DDnet. Because of the initial difficulties utilizing traditional optimizations on the VideoCore VII and 
- due to the findings of microwave tomography algorithm running twice as slow on the VideoCore VI compared to the CPU \cite{vasileiou_accelerated_nodate}
- we would like to step back and check the efficacy of running general purpose code on the Raspberry Pi's GPU by 
- using the OpenDwarfs Benchmarking suite. The 13 Dwarfs are a 
- set of fundamental algorithms that capture patterns in computation\cite{asanovic_landscape_2006}. They are useful in place of traditional benchmarks 
- to evaluate a hardware and software based on the types of programs expected to be most common. Testing the dwarfs on
- the Raspberry Pi's GPU for any noticeable performance benefits seems like a logical step to take before attempting 
- to implement the layers of the DDnet architecture for the Pi. This step will also help us further understand 
- what optimizations work well for the underlying hardware. Specifically we plan to test dense linear algebra 
- and sparse linear algebra as they have are the most applicable in the field of artificial neural networks.
 
- Further research towards implementing DDnet on the Raspberry Pi will unfold in stages. First, due to the initial limitations 
- discovered on the Raspberry Pi, we will likely pivot to implementing a 2D-DDnet rather than the full 3D-DDnet 
- as described in the ComputeCOVID19 paper. This has a far smaller memory footprint and can run in orders less time at 
- the cost of accuracy and only computing a single layer of a CT image at a time. We plan to optimize the inference 
- based on the findings of prior tests. If the VideoCore VII of the Raspberry Pi shows promise of performance, 
- we hope to have a working 2D-DDnet inference at the end of this research.
- 
-
- \section{Anticipated Results}
-
- We have already gotten programs to compile and run on the GPU of the Raspberry Pi through the use of clvk. 
- We anticipate that we will run many variations of simple kernels such as matrix multiply, dense linear algebra, 
- and sparse linear algebra with different mappings and granularity. We intend to benchmark them all to find the most 
- performant to better understand how to improve the operational intensity on the underlying hardware. We intend to 
- report on the common themes between all kernels that improve performance and be able to explain why 
- certain optimizations work on the VideoCore VII over others. 
-
- We anticipate being able to come to a conclusion on the efficacy of hijacking the GPU of the Pi using clvk for 
- future work based on the performance results of our testing. We plan to produce performance results and 
- runtime analysis of the a kernel running on the VideoCore VII versus a discrete GPU, the CPU of the Raspberry Pi, 
- and potentially other devices. From this we will be able to draw conclusions specifically on the performance 
- of OpenCL performance on the Pi using clvk. We do not intend to draw conclusions about the performance of the 
- VideoCore VII as a whole but rather the combination of the VideoCore VII hardware and the clvk software. 
- If we are unhappy with the results, further test could be to compare benchmarks of clvk to a natively 
- implemented solution in Vulkan or OpenGL ES.
-
- If the results of the Dwarfs benchmarks are promising, we intend to move forward with reproducing 2D-DDnet 
- inference kernels in OpenCL. We plan to then gather results on the runtime of inference on the VideoCore VII. 
- From these results, we intend on drawing conclusions on the efficacy of hijacking the GPU of the Raspberry Pi 
- to run inference on ANNs. Further studies could look into implementing inference on a more powerful device such as a TPU or AI board like 
- the Jetson Orin Nano and comparing the runtime results. 
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        ybar, bar width=6pt,
+        ymin=0, ymax=6.2,
+        width=\columnwidth/1.1,
+        height=0.55\columnwidth,
+        scale only axis=true,          % <-- NEW
+        enlargelimits=0.15,
+        symbolic x coords={1,2,3,4,5,6},
+        xticklabels={
+            barrier2-2,
+            belgium\_osm,
+            ct20stif,
+            heart2,
+            mac\_econ\_fwd500,
+            webbase-1M},
+        xtick=data,
+        x tick label style={rotate=30,anchor=east},
+        ylabel={Speed-up},
+        legend style={
+      at={(0.02,0.98)},          % inside; near top-left
+      anchor=north west,
+      draw=none,                 % no border
+      fill=none,
+      font=\footnotesize,},
+      ]
+      % --- data using the numeric x=1…6 trick ---
+      \addplot coordinates {(1,5.384) (2,3.124) (3,5.564) (4,5.786) (5,4.884) (6,4.169)};
+      \addplot coordinates {(1,4.649) (2,2.969) (3,3.872) (4,4.606) (5,4.149) (6,2.709)};
+      \addplot coordinates {(1,1.158) (2,2.551) (3,1.281) (4,0.902) (5,1.057) (6,0.825)};
+      \addplot coordinates {(1,0.249) (2,0.859) (3,0.331) (4,0.196) (5,0.255) (6,0.304)};
+      \legend{Coord-T/Serial, CSR-T/Serial, GPU/Serial, GPU/Thread}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Relative performance of SpMV variants per matrix (higher is better).}
+  \label{fig:spmv_speedup_bars}
+\end{figure}
 
 
 
@@ -369,9 +435,6 @@ and flagging mobile CT, X-ray, MRI scans for TB, pneumonia, microcalcifications,
  Looking further into specific optimizations made during the era of early general purpose GPU programming will likely
  be the best source help when programming for the Pi. 
 
-
-
- 
 
  \section{Conclusion}
 
