@@ -3,7 +3,7 @@
 #include<math.h>
 #include<time.h>
 
-#include "../inc/ziggurat.h"
+#include "ziggurat.h"
 
 /******************************************************************************/
 

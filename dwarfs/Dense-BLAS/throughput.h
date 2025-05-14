@@ -1,0 +1,9 @@
+#ifndef BLAS_THROUGHPUT_H
+#define BLAS_THROUGHPUT_H
+
+#define LENGTH 1000000
+#define NUM_TRIALS 1000
+
+
+#endif //BLAS_THROUGHPUT_H
+

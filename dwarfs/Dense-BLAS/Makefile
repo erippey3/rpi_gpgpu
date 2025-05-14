@@ -22,13 +22,12 @@ OBJS = \
   $(OBJ_DIR)/wtime.o \
   $(OBJ_DIR)/err_code.o \
   $(OBJ_DIR)/benchmark.o \
-  $(OBJ_DIR)/graph_gen.o \
   $(OBJ_DIR)/device_info.o
 
-all: $(OBJ_DIR) spmv
+all: $(OBJ_DIR) blas
 
 # Create binary
-spmv: $(OBJS)
+blas: $(OBJS)
 	$(CC) $^ $(CCFLAGS) $(LDFLAGS) -o $@
 
 # Compile .c to obj/.o
@@ -62,4 +61,4 @@ $(OBJ_DIR):
 
 .PHONY: all clean
 clean:
-	rm -rf spmv $(OBJ_DIR)
+	rm -rf blas $(OBJ_DIR)

@@ -81,7 +81,7 @@ vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
     checkError(err, "Creating buffer d_y");
 
     // creating kernel from program file
-    cl_kernel kernel = clCreateKernel(program, "csr_tiled", &err);
+    cl_kernel kernel = clCreateKernel(program, "csr", &err);
     checkError(err, "Creating kernel csr");
 
     
@@ -101,7 +101,7 @@ vector *opencl_csr_spmv(const csr_matrix * m, const vector * v, benchmark *b){
 
 
     const size_t global[1] = {ceil((double)m->num_rows/TILE_SIZE)};
-    const size_t local[1] = {64}; // wait off on this
+    const size_t local[1] = {96}; // wait off on this
     err = clEnqueueNDRangeKernel(commands, kernel, 1, NULL, global, NULL, 0, NULL, NULL);
     checkError(err, "Enqueueing kernel");
 
