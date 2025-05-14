@@ -18,3 +18,20 @@ Using OpenCL device: NVIDIA GeForce GTX 1050
 
 ===== Parallel matrix mult (blocked), order 1024 on device ======
  0.01 seconds at 230095.8 MFLOPS 
+
+These are all speedups
+One element per work item 
+GTX 1050: 1
+VideoCore VII: 1
+One row per work item
+GTX 1050: 0.95
+VideoCore VII: 0.96
+One row per work item with thread private variables
+GTX 1050: 2.375
+VideoCore: 1.045
+One row per work item with group local and thread private variables
+GTX 1050: 2.375
+VideoCore: 1.514
+Block based with group local variables
+GTX 1050: 19
+VideoCore: 7.91

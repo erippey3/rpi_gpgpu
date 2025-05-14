@@ -14,45 +14,45 @@ Database file #1: 5234ProjectProposal.bib
 Warning--empty journal in asanovic_landscape_2006
 
 Done.
-You've used 23 entries,
+You've used 24 entries,
             4087 wiz_defined-function locations,
-            988 strings with 13991 characters,
-and the built_in function-call counts, 18670 in all, are:
-= -- 1525
-> -- 475
-< -- 135
-+ -- 267
-- -- 113
-* -- 1039
-:= -- 2898
-add.period$ -- 49
-call.type$ -- 23
-change.case$ -- 30
-chr.to.int$ -- 306
-cite$ -- 24
-duplicate$ -- 1303
-empty$ -- 1403
-format.name$ -- 106
-if$ -- 4239
+            994 strings with 14180 characters,
+and the built_in function-call counts, 19520 in all, are:
+= -- 1600
+> -- 494
+< -- 144
++ -- 277
+- -- 116
+* -- 1082
+:= -- 3029
+add.period$ -- 51
+call.type$ -- 24
+change.case$ -- 31
+chr.to.int$ -- 324
+cite$ -- 25
+duplicate$ -- 1363
+empty$ -- 1462
+format.name$ -- 110
+if$ -- 4436
 int.to.chr$ -- 0
-int.to.str$ -- 23
-missing$ -- 247
-newline$ -- 130
-num.names$ -- 25
-pop$ -- 557
+int.to.str$ -- 24
+missing$ -- 257
+newline$ -- 133
+num.names$ -- 26
+pop$ -- 575
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1354
+skip$ -- 1420
 stack$ -- 0
-substring$ -- 820
-swap$ -- 1116
-text.length$ -- 33
+substring$ -- 863
+swap$ -- 1170
+text.length$ -- 36
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 23
+type$ -- 24
 warning$ -- 1
-while$ -- 75
-width$ -- 25
-write$ -- 298
+while$ -- 80
+width$ -- 26
+write$ -- 309
 (There was 1 warning)

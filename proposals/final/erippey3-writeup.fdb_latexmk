@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex erippey3-writeup"] 1747223966.22066 "erippey3-writeup.aux" "erippey3-writeup.bbl" "erippey3-writeup" 1747223966.83335 0
-  "./5234ProjectProposal.bib" 1747218102.47263 31426 6695a1663eb2b76cfe1b4a6ab318d1f0 ""
+["bibtex erippey3-writeup"] 1747230184.92749 "erippey3-writeup.aux" "erippey3-writeup.bbl" "erippey3-writeup" 1747230211.9435 0
+  "./5234ProjectProposal.bib" 1747225197.58916 31756 f2b11f7432b8b9b7a1e6322bbf5c4ad4 ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "erippey3-writeup.aux" 1747223966.68357 2890 88f07199afaafdd9064661f12132459c "pdflatex"
+  "erippey3-writeup.aux" 1747230211.78955 3187 e28f763eb1b791f59a6deb8ee8460a2f "pdflatex"
   (generated)
   "erippey3-writeup.bbl"
   "erippey3-writeup.blg"
   (rewritten before read)
-["pdflatex"] 1747223966.27705 "/mnt/dev/Local/Code/rpi_gpgpu/proposals/final/erippey3-writeup.tex" "erippey3-writeup.pdf" "erippey3-writeup" 1747223966.83347 0
-  "/mnt/dev/Local/Code/rpi_gpgpu/proposals/final/erippey3-writeup.tex" 1747223965.45149 33376 3deb28fd96d07b1b5b7431ac3a8c9530 ""
+["pdflatex"] 1747230211.26102 "/mnt/dev/Local/Code/rpi_gpgpu/proposals/final/erippey3-writeup.tex" "erippey3-writeup.pdf" "erippey3-writeup" 1747230211.94362 0
+  "/mnt/dev/Local/Code/rpi_gpgpu/proposals/final/erippey3-writeup.tex" 1747230211.0495 38499 250adc7ccf10178c5d2f5808827cb943 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -126,6 +126,8 @@
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructure.code.tex" 1452211337 13828 11d1b09335a4a8baa693dd1e6cac3edf ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructureext.code.tex" 1496704190 24373 6544c1554e5da33118301011eb03058d ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatrix.code.tex" 1364427911 18861 7dc35832c8ccea3aa73cdcd75ec0a60b ""
+  "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.code.tex" 1620507943 123343 4a8309b5b481da7f7ea452c1469d7e10 ""
+  "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.coltype.code.tex" 1394061421 2713 fd4cc0a81e533baadca64f656777ffd6 ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshared.code.tex" 1583276309 83469 f77a7d8a23834d4c2472f8dba8e67bff ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_loader.code.tex" 1583276309 12347 43d867ea29e34d528123d9ef750aa146 ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfutil-common-lists.tex" 1496704190 8008 3bb2d07671e6afab7dcb90dfaec572a4 ""
@@ -189,6 +191,7 @@
   "/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty" 1601326656 274 5ae372b7df79135d240456a1c6f2cf9a ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty" 1601326656 325 f9f16d12354225b7dd52a3321f085955 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/pgfplots/pgfplots.sty" 1496704190 4904 ee78b44e85d6fccf08cd99370557481e ""
+  "/usr/local/texlive/2024/texmf-dist/tex/latex/pgfplots/pgfplotstable.sty" 1407365279 1440 4c1495abf57fc4dd215ebbf2a95b1cf8 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ot1ptm.fd" 1137110629 961 15056f4a61917ceed3a44e4ac11fcc52 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd" 1137110629 619 96f56dc5d1ef1fe1121f1cfeec70ee0c ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/tools/array.sty" 1718401325 14067 1383bd6ee23ab18ae0e796155404deb7 ""
@@ -197,9 +200,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1729880288 5475505 9858817de6e728d163c121232b884c29 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1729880342 3325856 6efa650a32c819af2e7ce5cf560fb2c3 ""
   "/usr/local/texlive/2024/texmf.cnf" 1729880285.74305 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "erippey3-writeup.aux" 1747223966.68357 2890 88f07199afaafdd9064661f12132459c "pdflatex"
-  "erippey3-writeup.bbl" 1747223966.27155 10292 12173a21470b442d3371f7cd9533ccaf "bibtex erippey3-writeup"
-  "erippey3-writeup.tex" 1747223965.45149 33376 3deb28fd96d07b1b5b7431ac3a8c9530 ""
+  "erippey3-writeup.aux" 1747230211.78955 3187 e28f763eb1b791f59a6deb8ee8460a2f "pdflatex"
+  "erippey3-writeup.bbl" 1747230184.97975 10518 aa3af3aec4af2d8b034696dd0dcc60eb "bibtex erippey3-writeup"
+  "erippey3-writeup.tex" 1747230211.0495 38499 250adc7ccf10178c5d2f5808827cb943 ""
   (generated)
   "erippey3-writeup.aux"
   "erippey3-writeup.log"

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.25)  14 MAY 2025 07:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.10.25)  14 MAY 2025 09:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -484,27 +484,29 @@ Package pgfplots: loading complementary utilities for your pgf version...
 File: tikzlibraryplotmarks.code.tex 2023-01-15 v3.1.10 (3.1.10)
  (/usr/local/texlive/2024/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmarks.code.tex
 File: pgflibraryplotmarks.code.tex 2023-01-15 v3.1.10 (3.1.10)
-))) (/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+))) (/usr/local/texlive/2024/texmf-dist/tex/latex/pgfplots/pgfplotstable.sty (/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex)
+Package: pgfplotstable 2021/05/15 v1.18.1 Table typesetting and Pretty-printing (1.18.1)
+ (/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.code.tex (/usr/local/texlive/2024/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstable.coltype.code.tex))) (/usr/local/texlive/2024/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count323
 \l__pdf_internal_box=\box70
 ) (./erippey3-writeup.aux)
 \openout1 = `erippey3-writeup.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
-LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
 
 -- Lines per column: 46 (approximate, difference = 4.47656pt).
 *geometry* driver: auto-detecting
@@ -562,12 +564,12 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package pgfplots notification 'compat/show suggested version=true': document has been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 31.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 32.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 32.
 (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -581,7 +583,7 @@ Underfull \vbox (badness 1533) has occurred while \output is active []
 
 
 ]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 115.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 116.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 )
@@ -596,7 +598,7 @@ Underfull \vbox (badness 1533) has occurred while \output is active []
 
 
 [3]
-Overfull \hbox (74.41255pt too wide) in paragraph at lines 218--231
+Overfull \hbox (74.41255pt too wide) in paragraph at lines 219--232
  [][] 
  []
 
@@ -605,12 +607,12 @@ Overfull \hbox (74.41255pt too wide) in paragraph at lines 218--231
 
 
 [4]
-Underfull \hbox (badness 7613) in paragraph at lines 264--271
+Underfull \hbox (badness 7613) in paragraph at lines 265--272
 []\OT1/ptm/m/n/10 Next, gen-eral ma-trix ma-trix mul-ti-pli-ca-tion
  []
 
 
-Underfull \hbox (badness 4266) in paragraph at lines 264--271
+Underfull \hbox (badness 4266) in paragraph at lines 265--272
 \OT1/ptm/m/n/10 (GEMM) was at-tempted. Im-ple-men-ta-tions for
  []
 
@@ -628,13 +630,37 @@ Overfull \hbox (8.9158pt too wide) in paragraph at lines 394--395
  [][] 
  []
 
+Package pgfplots info on input line 428: Using 'lua backend=false' for axis: x coord trafo unsupported.
+
+Overfull \hbox (33.66971pt too wide) in paragraph at lines 446--448
+ [][] 
+ []
+
 
 
 
 
 [6]
+Package pgfplots info on input line 487: Using 'lua backend=false' for axis: x coord trafo unsupported.
 
-(./erippey3-writeup.bbl
+Overfull \hbox (2.26735pt too wide) in paragraph at lines 504--505
+[][] 
+ []
+
+Package pgfplots info on input line 529: Using 'lua backend=false' for axis: x coord trafo unsupported.
+
+Overfull \hbox (2.12442pt too wide) in paragraph at lines 536--537
+[][] 
+ []
+
+
+
+
+Underfull \vbox (badness 1533) has occurred while \output is active []
+
+
+
+[7] (./erippey3-writeup.bbl
 Underfull \hbox (badness 1571) in paragraph at lines 25--27
 []\OT1/ptm/m/n/8 M. Ghobakhloo, ``In-dus-try 4.0, dig-i-ti-za-tion,
  []
@@ -653,6 +679,8 @@ Underfull \hbox (badness 3019) in paragraph at lines 25--27
 Overfull \hbox (37.2272pt too wide) in paragraph at lines 25--27
 \OT1/ptm/m/n/8 https://www.sciencedirect.com/science/article/pii/S0959652619347390 
  []
+
+
 
 ** WARNING: IEEEtran.bst: No hyphenation pattern has been
 ** loaded for the language `en'. Using the pattern for
@@ -707,7 +735,7 @@ Overfull \hbox (83.27542pt too wide) in paragraph at lines 60--62
 ** the default language instead.
 
 
-[7]
+[8]
 Overfull \hbox (239.89926pt too wide) in paragraph at lines 88--90
 \OT1/ptm/m/n/8 https://www.authorea.com/doi/full/10.36227/techrxiv.171198045.57783972?commit=7dde951108f896bad012b52dac17955e867249c0 
  []
@@ -748,6 +776,9 @@ Overfull \hbox (46.05963pt too wide) in paragraph at lines 108--110
  []
 
 
+Underfull \vbox (badness 1466) has occurred while \output is active []
+
+
 
 )
 
@@ -763,25 +794,25 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[8] (./erippey3-writeup.aux)
+[9] (./erippey3-writeup.aux)
  ***********
 LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-10-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 25448 strings out of 473577
- 650940 string characters out of 5728195
- 1203142 words of memory out of 5000000
- 47946 multiletter control sequences out of 15000+600000
+ 26070 strings out of 473577
+ 672100 string characters out of 5728195
+ 1207143 words of memory out of 5000000
+ 48557 multiletter control sequences out of 15000+600000
  600936 words of font info for 123 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,19n,101p,784b,2311s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on erippey3-writeup.pdf (8 pages, 131667 bytes).
+Output written on erippey3-writeup.pdf (9 pages, 138975 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 78 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

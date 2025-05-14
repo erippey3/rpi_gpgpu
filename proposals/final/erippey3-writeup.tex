@@ -12,6 +12,7 @@
  \usepackage[table]{xcolor}
  \usepackage{colortbl}
 \usepackage{pgfplots}
+\usepackage{pgfplotstable}
 \pgfplotsset{compat=1.18}
  
  \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
@@ -395,7 +396,144 @@ Raspberry Pi where cross referenced against results from a system with a GTX 105
   \label{fig:spmv_speedup_bars}
 \end{figure}
 
+Level 1 BLAS operations performed equally as poor, though the comparison was not in favor of the GPU. The 
+GPU achieved half the throughput as a single core of the CPU. However, additional study needs to be done of the 
+throughput as the current calculation does a two memory allocations per GPU BLAS operation. Whereas there 
+where two CPU memory allocations during the entirety of the serial test. The majority of sequential 
+BLAS operations will be done in place thus having this many OpenCL calls to allocate memory is unrealistic.
 
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        ybar,
+        bar width=8pt,
+        scale only axis=true,          % keep bars full-width in the column
+        width=\columnwidth,
+        height=0.55\columnwidth,
+        ymin=0,
+        ylabel={GFLOP/s},
+        enlargelimits=0.15,
+        symbolic x coords={DOT,AXPY,SCAL},
+        xtick=data,
+        x tick label style={rotate=30,anchor=east},
+        legend columns=3,
+        legend style={
+            at={(0.5,1.02)},
+            anchor=south,
+            draw=none,
+            fill=none,
+            font=\footnotesize},
+      ]
+      % ------- Serial ---------
+      \addplot coordinates {
+        (DOT,  0.52)
+        (AXPY, 0.38)
+        (SCAL, 0.18)};
+      % ------- OpenMP ---------
+      \addplot coordinates {
+        (DOT,  1.69)
+        (AXPY, 1.30)
+        (SCAL, 1.02)};
+      % ------- GPU (OpenCL) ---
+      \addplot coordinates {
+        (DOT,  0)      % GPU dot not implemented
+        (AXPY, 0.16)
+        (SCAL, 0.09)};
+      \legend{Serial, OpenMP, GPU}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Throughput of level-1 BLAS kernels on Raspberry Pi 5  
+           (higher is better).  GPU \textit{dot} is unimplemented, hence 0.}
+  \label{fig:blas_gflops}
+\end{figure}
+
+
+The results of GEMM where, however, promising. The most performant result was the block based 
+OpenCL kernel. The block based kernel saw 15.6x speedup, a figure unattainable by the CPU. The 
+GPU achieved a throughput of 3.7 GFLOPS. Unfortunately there are no consistent statistics online,
+describing the peak floating point performance of the VideoCore VII, otherwise it would be insightful 
+to compare the performance of GEMM to its roofline model as GEMM is a compute bound operation. One 
+interesting thing of note is that the performance gain of various optimizations is not consistent between 
+the VideoCore VII and other GPGPUs. The majority of optimizations had a substantial effect on the GTX 1050, 
+whereas only blocking had a large effect on the VideoCore.
+
+
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=10pt,
+    width=\columnwidth,
+    height=0.55\columnwidth,
+    enlargelimits=0.1,
+    legend style={at={(0.5,-1.2)},
+        anchor=north,legend columns=-1},
+    ylabel={Speed-up},
+    symbolic x coords={
+        Elem/Work,
+        Row/Work,
+        Row+ThreadPriv,
+        Row+Grp+ThreadPriv,
+        Block+GrpLocal
+    },
+    xtick=data,
+    x tick label style={rotate=45, anchor=east},
+    nodes near coords,
+    nodes near coords align={vertical},
+    ymin=0,
+    ymax=20,
+    grid=major
+    ]
+\addplot+[style={blue,fill=blue!30}, draw=blue] coordinates {
+    (Elem/Work, 1)
+    (Row/Work, 0.95)
+    (Row+ThreadPriv, 2.375)
+    (Row+Grp+ThreadPriv, 2.375)
+    (Block+GrpLocal, 19)
+};
+\addplot+[style={brown,fill=brown!30}, draw=brown] coordinates {
+    (Elem/Work, 1)
+    (Row/Work, 0.96)
+    (Row+ThreadPriv, 1.045)
+    (Row+Grp+ThreadPriv, 1.514)
+    (Block+GrpLocal, 7.91)
+};
+\legend{GTX 1050, VideoCore VII}
+\end{axis}
+\end{tikzpicture}
+
+
+Based on the success of the blocked approach for general matrix matrix multiplication, we assumed we would see similar improvements 
+for a blocked general matrix vector multiplication approach. This was not the case. The blocking approach for 
+OpenCL GEMV saw a 0.5x speedup by comparison to the serial implementation. The margin for speedup is smaller by comparison to 
+GEMM and a vector is far smaller than a second matrix so it is less able to take advantage of being held in local memory.
+
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    bar width=15pt,
+    width=\columnwidth,
+    height=0.55\columnwidth,
+    enlargelimits=0.15,
+    ylabel={Avg Runtime (s)},
+    symbolic x coords={Serial, OpenMP, OpenCL},
+    xtick=data,
+    nodes near coords,
+    nodes near coords align={vertical},
+    ymin=0,
+    ymax=1,
+    grid=major,
+    axis y line*=left,
+    axis x line*=bottom
+]
+\addplot+[style={fill=blue!40}, draw=blue] coordinates {
+    (Serial, 0.413175)
+    (OpenMP, 0.150412)
+    (OpenCL, 0.895101)
+};
+\end{axis}
+\end{tikzpicture}
 
   \subsection{Related Work}
 
@@ -414,7 +552,7 @@ Raspberry Pi where cross referenced against results from a system with a GTX 105
  Their research was on using heterogeneous systems to reconstruct 3D microwave tomography images from measuring 
  electromagnetic signals. Their paper states their research can benefit from relatively low power portable technology. 
  When running on the Raspberry Pi 4, their algorithm took over twice as long to run on the VideoCore VI as it took 
- to run on the Raspberry Pi's CPU. 
+ to run on the Raspberry Pi's CPU. This aligns with what we saw for the majority of our tests.
 
  This area of research heavily reflects research done in the mid 2000's to bring general purpose compute to 
  graphics hardware. During that time, GPUs where advancing from 8 bit chanel color value pipelines to 
@@ -438,14 +576,17 @@ Raspberry Pi where cross referenced against results from a system with a GTX 105
 
  \section{Conclusion}
 
- In summary, this proposal aims to explore the untapped potential of the Raspberry Pi 5’s embedded GPU for 
- accelerating neural network inference. By leveraging the Broadcom VideoCore VII through a strategic porting 
- of OpenCL kernels to Vulkan, the research intends to address key challenges related to latency and power 
- consumption in edge computing environments. While preliminary expectations suggest that the performance 
- improvements may be incremental due to inherent architectural constraints, the insights gained will provide a 
- foundation for future optimizations and potential adaptations to other embedded platforms. Ultimately, this 
- work seeks to contribute to the broader field of Industry 4.0 by enhancing the computational capabilities of 
- low-cost, low-power devices, thus opening new avenues for real-time, on-device intelligence.
+This work presents a novel investigation into harnessing the GPU of the Raspberry Pi 5 for general-purpose 
+computation, particularly in the context of neural network inference at the edge. Through a systematic evaluation of 
+dense and sparse linear algebra workloads, we have demonstrated both the potential and the practical limitations of 
+using the VideoCore VII GPU via OpenCL-to-Vulkan translation. While the GPU performed poorly on bandwidth-bound operations 
+like SpMV and underwhelmed in Level 1 BLAS throughput, it showed promising acceleration in compute-bound workloads such as 
+matrix-matrix multiplication—achieving a 15.6× speedup over the serial baseline. These results highlight that performance 
+gains are highly dependent on memory access patterns, synchronization overhead, and architectural compatibility. Despite 
+the challenges, our findings reaffirm the feasibility of GPU acceleration on low-power edge devices when careful consideration 
+is given to algorithm design and hardware capabilities. This exploration lays the groundwork for more targeted optimizations 
+and future efforts in deploying deep learning workloads directly on embedded GPUs, reducing reliance on the cloud, and enabling 
+more responsive, intelligent edge systems.
  
  \bibliographystyle{IEEEtran}  % or another style, e.g., plain, unsrt, etc.
  \bibliography{5234ProjectProposal}

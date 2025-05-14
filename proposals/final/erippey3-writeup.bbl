@@ -127,4 +127,7 @@ S.~Filippone, V.~Cardellini, D.~Barbieri, and A.~Fanfarillo, ``Sparse matrix-vec
 \bibitem{davis2011university}
 T.~A. Davis and Y.~Hu, ``The university of florida sparse matrix collection,'' \emph{ACM Transactions on Mathematical Software (TOMS)}, vol.~38, no.~1, pp. 1--25, 2011.
 
+\bibitem{williams2009roofline}
+S.~Williams, A.~Waterman, and D.~Patterson, ``Roofline: an insightful visual performance model for multicore architectures,'' \emph{Communications of the ACM}, vol.~52, no.~4, pp. 65--76, 2009.
+
 \end{thebibliography}
